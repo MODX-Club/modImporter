@@ -613,6 +613,11 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     public function failure($msg = '', $object = null, $level = xPDO::LOG_LEVEL_ERROR, $continue = false, $step = '') {
         
+        // Фиксируем ошибку в MODX, чтобы можно было потом проверить 
+        // ее наличие методом $this->hasErrors();
+        // Получить значения ошибок можно методом $ths->modx->error->getErrors()
+        parent::failure($msg, $object);
+        
         return $this->prepareResponse(false, $msg, $object, $level, $continue, $step);
     }
     
