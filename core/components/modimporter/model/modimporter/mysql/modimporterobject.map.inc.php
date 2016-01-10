@@ -14,6 +14,7 @@ $xpdo_meta_map['modImporterObject']= array (
     'tmp_object_type' => NULL,
     'tmp_external_key' => '',
     'tmp_parent' => NULL,
+    'tmp_title' => '',
     'tmp_processed' => '0',
     'tmp_error' => 0,
     'tmp_error_msg' => NULL,
@@ -43,6 +44,13 @@ $xpdo_meta_map['modImporterObject']= array (
       'phptype' => $externalKeyPhpType,
       'null' => false,
       'index' => 'index',
+    ),
+    'tmp_title' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
     ),
     'tmp_processed' => 
     array (

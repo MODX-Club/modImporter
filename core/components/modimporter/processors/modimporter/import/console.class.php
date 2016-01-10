@@ -858,6 +858,19 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     }
     
     
+    protected function getImportObject($id, $objectType = null, $className = "modImporterObject"){
+        $condition = array(
+            "tmp_external_key"  => $id,
+        );
+        
+        if($objectType !== null){
+            $condition["tmp_object_type"] = $objectType;
+        }
+        
+        return $this->modx->getObject($className, $condition);
+    }
+    
+    
     
     # protected function processNode(SimpleXMLElement $node){
     #     print_r($node);
