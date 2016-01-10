@@ -121,7 +121,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
                 break;
             
             
-            // Распаковать фай
+            // Распаковать файл
             case 'modimporter_unzip_file':
                 
                 return $this->StepUnzipFile();
@@ -378,6 +378,12 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         }
         
         // else
+        return $this->prepareSuccessUnzipFileResponse();
+    }
+    
+    
+    protected function prepareSuccessUnzipFileResponse(){
+        
         return $this->success('Файл успешно распакован');
     }
     

@@ -48,7 +48,7 @@ class modModimporterImportXmlConsoleProcessor extends modModimporterImportConsol
             
             $node = $reader->getNodeName($xmlReader);            
             
-            if(!$reader->isNodeText($xmlReader) && $reader->getSchemaNodeByKey($schema, $node)){                                
+            if(!$reader->isNodeText($xmlReader) && $reader->getSchemaNodeByKey($schema, $node) && $reader->isNode($node, $xmlReader)){                                
                 
                 
                 if(isset($schema["parse"]) && $schema["parse"]){
@@ -317,6 +317,7 @@ class modModimporterImportXmlConsoleProcessor extends modModimporterImportConsol
                     # 
                     # print_r($object->toArray());
                     
+                    # Надо будет проверить на предмет пропуска элементов
                     $xmlReader->next();
                     return true;
                 }                               
