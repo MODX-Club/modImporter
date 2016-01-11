@@ -258,6 +258,20 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
                             
                             return $this->StepImportPrices();
                             break;
+                            
+                            
+                            // Сбрасываем цены
+                            case 'modimporter_import_flush_prices':
+                                
+                                return $this->StepImportFlushPrices();
+                                break;
+                            
+                            
+                            // Создаем
+                            case 'modimporter_import_create_prices':
+                                
+                                return $this->StepImportCreatePrices();
+                                break;
                         
                         
                         // Выполняем импорт цен
@@ -495,9 +509,20 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     protected function StepImportPrices(){
         
-        return $this->nextStep("modimporter_import_remains", "Цены успешно импортированы");
+        return $this->nextStep("modimporter_import_flush_prices", "Стартуем импорт цен");
     }
     
+    
+    protected function StepImportFlushPrices(){
+        
+        return $this->nextStep("modimporter_import_create_prices", "Цены успешно сброшены");
+    }
+    
+    
+    protected function StepImportCreatePrices(){
+        
+        return $this->nextStep("modimporter_import_remains", "Цены успешно созданы");
+    }
     
     
     protected function StepImportRemains(){

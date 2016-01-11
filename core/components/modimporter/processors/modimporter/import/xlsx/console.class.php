@@ -75,7 +75,7 @@ class modModimporterImportXlsxConsoleProcessor extends modModimporterImportConso
             if(!$reader->isNodeText($xmlReader) && $reader->getSchemaNodeByKey($schema, $node) && $reader->isNode($node, $xmlReader)){                                
                 
                 
-                if(isset($schema["parse"]) && $schema["parse"]){
+                if(isset($schema["parse"]) && $schema["parse"] && $node == "si"){
                     
                     $xml = $reader->getXMLNode($xmlReader);   
                     
@@ -89,9 +89,11 @@ class modModimporterImportXlsxConsoleProcessor extends modModimporterImportConso
                         return $error;
                     }
                     
+                    # print_r($object->toArray());
+                    
                     $index++;
                     
-                    $xmlReader->next();
+                    # $xmlReader->next();
                     
                     return true;
                 }                               
