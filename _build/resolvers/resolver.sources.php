@@ -20,6 +20,13 @@ $vehicle->resolve('file',array(
 ));
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in ManagerPath'); flush();
 
+// Add manager source
+$vehicle->resolve('file',array(
+    'source' => $sources['source_console'],
+    'target' => "return MODX_CORE_PATH . 'components/';",
+));
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in ManagerPath'); flush();
+
 // Add site base path source
 # $vehicle->resolve('file',array(
 #     'source' => $sources['root'],

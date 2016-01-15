@@ -1,9 +1,15 @@
-modImporter-1.0.1beta
+modImporter-1.1.0-beta
+==============================
+- Added CSV-reader
+- Added Console Extra debug script
+
+
+modImporter-1.0.1-beta
 ==============================
 - Added empty controllers
 
 
-modImporter-1.0.0beta
+modImporter-1.0.0-beta
 ==============================
 
 - First release
