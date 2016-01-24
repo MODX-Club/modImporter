@@ -94,6 +94,19 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     protected function processRequest(){ 
         
+        
+        // Административные действия
+        switch(trim($this->getProperty('modimporter_admin_action'))){
+            
+            case 'get_actions_list':
+                
+                return $this->getActionsList();
+                break;
+            
+            default:;
+        }
+        
+        
         if(!$step = trim($this->getProperty('modimporter_step'))){
             return $this->failure("Не указано действие");
         }
@@ -292,6 +305,24 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         }
         
         return $this->failure("Действие не известно '{$step}'", $this->properties);
+    }
+    
+    
+    protected function getActionsList(){
+        
+        # foreach($this as $f => $v){
+        #     print "\n".$f;
+        # }
+        
+        $methods = get_class_methods(__CLASS__);
+        
+        $methods = array_filter($methods, function($method){
+            return strpos($method, 'Step') === 0;
+        });
+        
+        print_r($methods);
+        
+        return $this->success('sad');
     }
     
     

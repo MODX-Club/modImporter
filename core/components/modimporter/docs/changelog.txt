@@ -1,3 +1,9 @@
+modImporter-1.1.1-beta
+==============================
+- Added unzip processor
+- Set article key field length to 36
+
+
 modImporter-1.1.0-beta
 ==============================
 - Added CSV-reader

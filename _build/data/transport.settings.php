@@ -32,7 +32,7 @@ $setting_name = PKG_NAME_LOWER.'.external_key_length';
 $setting = $modx->newObject('modSystemSetting');
 $setting->fromArray(array(
     'key' => $setting_name,
-    'value' => 32,
+    'value' => 36,
     'xtype' => 'textfield',
     'namespace' => NAMESPACE_NAME,
     'area' => 'default',
