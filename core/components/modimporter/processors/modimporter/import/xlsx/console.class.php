@@ -81,6 +81,7 @@ class modModimporterImportXlsxConsoleProcessor extends modModimporterImportConso
                     
                     $object = $this->createImportObject($index, array(
                         "tmp_title" => (string)$xml->t,
+                        "tmp_content" => (string)$xml->t,
                     ), "shared_string");
                     
                     if(!$object->save()){
