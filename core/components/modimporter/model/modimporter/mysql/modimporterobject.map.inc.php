@@ -16,6 +16,7 @@ $xpdo_meta_map['modImporterObject']= array (
     'tmp_resource_id' => NULL,
     'tmp_parent' => NULL,
     'tmp_title' => '',
+    'tmp_content' => '',
     'tmp_processed' => '0',
     'tmp_error' => 0,
     'tmp_error_msg' => NULL,
@@ -62,6 +63,12 @@ $xpdo_meta_map['modImporterObject']= array (
       'phptype' => 'string',
       'null' => false,
       'index' => 'index',
+    ),
+    'tmp_content' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => false,
     ),
     'tmp_processed' => 
     array (
