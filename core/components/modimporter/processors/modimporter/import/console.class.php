@@ -684,7 +684,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             "level"     => $level,
             "continue"  => $continue,
             "step"      => $step,
-            "data"      => [],          // Надо, чтобы MODX-Ajax не разваливался
+            "data"      => array(),          // Надо, чтобы MODX-Ajax не разваливался
             "object"    => $object,
         );
         
