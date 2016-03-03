@@ -17,11 +17,11 @@ abstract class modImporterReader extends modProcessor implements modImporterRead
     protected $initialized = false;
     
     
-    public function __construct(& $modx){
+    # public function __construct(& $modx){
         
-        $this->modx = & $modx;
+    #    $this->modx = & $modx;
         
-    }
+    #}
     
     
     public function initialize(modProcessor & $processor){
