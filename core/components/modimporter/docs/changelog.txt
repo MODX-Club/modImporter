@@ -1,3 +1,9 @@
+modImporter-1.1.2-beta
+==============================
+- Added Continue button
+- Minor bugfix
+
+
 modImporter-1.1.1-beta
 ==============================
 - Added unzip processor

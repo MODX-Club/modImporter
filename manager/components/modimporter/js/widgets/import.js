@@ -50,6 +50,12 @@ modImporter.window.Console  = function(config) {
                 ,handler: this.download
                 ,scope: this
             },*/{
+                text: 'Продолжить'
+                ,itemId: 'continueBtn'
+                ,disabled: true
+                ,scope: this
+                ,handler: this.StartImport
+            },{
                 text: _('ok')
                 ,itemId: 'okBtn'
                 ,disabled: false
@@ -71,6 +77,8 @@ modImporter.window.Console  = function(config) {
         ,autoHeight: false
         
         ,url: modImporter.config.connector_url + 'connector.php'
+        
+        
     });
     
     config.baseParams.output_format = 'json';
@@ -103,7 +111,6 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
                 
                 scope: this
                 ,failure: function(frm,response) {
-                    
                     // console.log(response);
                     var response = Ext.decode(response.response.responseText);
                     
@@ -114,9 +121,14 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
                     // }
                     // return;
                     
-                    response.level = response.level || 1;
+                    if(!response.message){
+                        var response = {};
+                        response.level = 1;
+                        response.message = 'Что-то пошло не так... Попробуйте еще разок!';
+                    }
                     
                     this.log(response);
+                    this.fbar.setDisabled(false);
                 }
                 ,success: function(frm, response) {
                     //console.log(this);
@@ -163,7 +175,7 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
                         
                         if (!response.continue) {
                             this.fireEvent('complete');
-                            this.fbar.setDisabled(false);
+                            //this.fbar.setDisabled(false);
                             return;
                         }
                         
@@ -173,6 +185,7 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
                     catch(e){
                         alert('Ошибка разбора ответа');
                         console.log(e);
+                        this.fbar.setDisabled(false);
                         return;
                     }
                     
