@@ -1,3 +1,10 @@
+modImporter-1.2.0-beta
+==============================
+- Added CLI-mode
+- Code refactoring
+- Added print_r output format
+
+
 modImporter-1.1.2-beta
 ==============================
 - Added Continue button

@@ -3,6 +3,20 @@
 if(!isset($_REQUEST['ctx']) OR !in_array($_REQUEST['ctx'], array('web'))){
     $_REQUEST['ctx'] = 'web';
 }
+
+ 
+
+// In cli-mode 
+if(php_sapi_name() == "cli" AND !empty($argv[1])){
+    
+    $args = array();
+    
+    $params = parse_str($argv[1], $args);
+    
+    $_GET = array_merge($_GET, $args);
+    $_REQUEST = array_merge($_REQUEST, $args);
+}
+  
   
 define('MODX_REQP', false);
 
@@ -17,9 +31,11 @@ $_SERVER['HTTP_MODAUTH']= $modx->user->getUserToken($modx->context->get('key'));
 if(!$path = $modx->getOption('modimporter.core_path')){
     $path = $modx->getOption('core_path').'components/modimporter/';
 }
-$path .= 'processors/';
+$path .= 'processors/modimporter/';
 
-$location = 'modimporter/public/';
+if(!isset($location)){
+    $location = '';
+}
 
 $params = array(
     'processors_path' => $path,
@@ -29,8 +45,6 @@ $params = array(
 if(isset($action)){
     $params['action'] = $action;
 }
-
-# print $path . $location;
 
 $modx->request->handleRequest($params);
 

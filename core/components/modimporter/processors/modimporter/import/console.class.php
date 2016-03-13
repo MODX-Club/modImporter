@@ -57,7 +57,9 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             OR (
                 $this->modx->user->isAuthenticated($this->modx->context->key) 
                 && parent::checkPermissions()
-            );
+            )
+            # OR php_sapi_name() == "cli"
+            ;
     }
     
     
@@ -65,9 +67,21 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         
         $this->modx->addPackage('modimporter', MODX_CORE_PATH . 'components/modimporter/model/');
         
-        # if(!$this->getProperty('source')){
-        #     return 'Не был получен ID источника файлов';
-        # }
+        /*
+            Устанавливаем предпочтительные настройки для различных типов импорт-клиентов
+        */
+        switch($this->getProperty('modimporter_client_type')){
+            
+            
+            // Консоль
+            case 'bash':
+                
+                $this->setDefaultProperties(array(
+                    "output_format"     => "print_r",
+                    "modimporter_send_redirect_headers" => 1,
+                ));
+                break;
+        }
         
         
         $this->setDefaultProperties(array(
@@ -76,11 +90,15 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             "output_format"     => "",      // json or false
             "source"        => (int)$this->modx->getOption("modimporter.media_source", null, $this->modx->getOption("default_media_source", null, 1)),
             "modimporter_response_delay"    => 0,
+            "modimporter_send_redirect_headers"    => 0,        // for local cURL mode
         ));
         
-        # $this->setProperties(array(
-        #     "ImportPath" => $this->modx->getOption('modimporter.import_dir', null, MODX_CORE_PATH . 'components/modimporter/import/') ,
-        # ));
+        $this->setProperties(array(
+            "modimporter_in_cli_mode" => php_sapi_name() == "cli",
+        ));
+        
+        $this->modx->setLogLevel($this->getProperty('modimporter_log_level', $this->modx->getLogLevel()));          // 1-ERROR, 2-WARN, 3-INFO, 4-DEBUG
+        $this->modx->setLogTarget($this->getProperty('modimporter_log_target', $this->modx->getLogTarget()));       // HTML|ECHO|FILE
         
         return true;
     }
@@ -93,7 +111,6 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     
     protected function processRequest(){ 
-        
         
         // Административные действия
         switch(trim($this->getProperty('modimporter_admin_action'))){
@@ -310,17 +327,11 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     protected function getActionsList(){
         
-        # foreach($this as $f => $v){
-        #     print "\n".$f;
-        # }
-        
         $methods = get_class_methods(__CLASS__);
         
         $methods = array_filter($methods, function($method){
             return strpos($method, 'Step') === 0;
         });
-        
-        print_r($methods);
         
         return $this->success('sad');
     }
@@ -367,6 +378,8 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             $username = $this->getProperty('username');
             $password = $this->getProperty('password');
             
+            
+            
             if(!$username){
                 return $this->failure('Не указан логин');
             }
@@ -393,11 +406,6 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         }
         
         // else
-        
-        
-        # $this->addOutput(session_name());
-        # $this->addOutput(session_id());
-        # return $this->success($output);
         return $this->prepareAuthResponse();
     }
     
@@ -605,10 +613,6 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             return false;
         }
         
-        # print $source->getBasePath();
-        
-        # return $this->getProperty("ImportPath");
-        
         return $source->getBasePath();
     }
     
@@ -628,37 +632,11 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         return $bases['pathAbsoluteWithPath'];
     }
     
-    
-    # protected function prepareResponse(array $message, array $params = array()){
-    #     $response = array(
-    #         'data'  => '',   
-    #     );
-    #     
-    #         
-    #     if ($message['msg'] == 'COMPLETED') {
-    #         $response['complete'] = true;
-    #     }
-    #     else{
-    #         $response['data'] .= '<span class="' . strtolower($message['level']) . '">';
-    #         if ($message['title']) {
-    #             $response['data'] .= '<small>(' . trim($message['title']) . ')</small>';
-    #         }
-    #         $response['data'] .= $message['msg']."</span><br />\n";
-    #         
-    #         $response['params'] = $params;  // Параметры. Будут установлены в качестве передаваемых в запросе параметров
-    #     }
-    #     return $this->success('', $response);
-    # }
-    
     # const LOG_LEVEL_FATAL = 0;
     # const LOG_LEVEL_ERROR = 1;
     # const LOG_LEVEL_WARN = 2;
     # const LOG_LEVEL_INFO = 3;
     # const LOG_LEVEL_DEBUG = 4;
-    
-    # protected function resultError(){
-    #     # return 
-    # }
     
     
     public function success($msg = '', $object = null, $level = xPDO::LOG_LEVEL_INFO, $continue = false, $step = '') {
@@ -678,6 +656,11 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     }
     
     protected function prepareResponse($success, $msg = '', $object = null, $level = xPDO::LOG_LEVEL_INFO, $continue = false, $step = ''){
+        
+        if($response_delay = (int)$this->getProperty('modimporter_response_delay')){
+            sleep($response_delay);
+        }
+        
         $result = array(
             "success"   => $success,
             "message"   => $msg,
@@ -688,12 +671,40 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
             "object"    => $object,
         );
         
+        $this->prepareData($result);
+        
+        
+        
+        if($continue && $this->getProperty('modimporter_send_redirect_headers')){
+            
+            $url = parse_url($_SERVER['REQUEST_URI']);
+            
+            parse_str($url['query'], $arr);
+            
+            if($step){
+                $arr['modimporter_step'] = $step;
+            }
+            
+            $redirect_url = $url['path'] ."?" . http_build_query($arr);
+            
+            header("Location: {$redirect_url}");
+        }
+        
+        return $this->formatOutput($result);
+    }
+    
+    
+    protected function prepareData(array & $result){
+        return $result;
+    }
+    
+    protected function formatOutput($result){
+        
         if($this->getProperty("output_format") == "json"){
             $result = json_encode($result);
         }
-        
-        if($response_delay = (int)$this->getProperty('modimporter_response_delay')){
-            sleep($response_delay);
+        else if($this->getProperty("output_format") == "print_r"){
+            $result = print_r($result, 1);
         }
         
         return $result;
@@ -701,12 +712,13 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
     
     
     protected function progress($msg = '', $object = null, $level = xPDO::LOG_LEVEL_INFO, $step = ''){
+            
         return $this->success($msg, $object, $level, true, $step);
     }
     
     
     protected function nextStep($step, $msg = '', $object = null, $level = xPDO::LOG_LEVEL_INFO){
-        # $this->setStep($step);
+        
         return $this->progress($msg, $object, $level, $step);
     }
     
