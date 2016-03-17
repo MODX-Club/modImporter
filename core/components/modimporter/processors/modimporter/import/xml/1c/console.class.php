@@ -375,18 +375,13 @@ class modModimporterImportXml1cConsoleProcessor extends modModimporterImportXmlC
     
     
     
-    /*
-        Необходимо для импорта из 1С, так как 1Ска за раз отправляет несколько файлов
-        и если не будет сброшен шаг, то на последующих
-        файлах сразу будет завершен импорт
-    */
-    protected function StepDeactivate(){
-        
-        // Сбрасываем шаг
-        $this->setSessionValue('STEP', null);
-        
-        return parent::StepDeactivate();
-    }
+    # protected function StepDeactivate(){
+    #     
+    #     // Сбрасываем шаг
+    #     $this->setSessionValue('STEP', null);
+    #     
+    #     return parent::StepDeactivate();
+    # }
     
     # protected function stepImportComplite(){
     #     

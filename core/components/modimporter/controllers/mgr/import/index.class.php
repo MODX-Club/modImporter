@@ -11,6 +11,7 @@ class ModimporterControllersMgrImportIndexManagerController extends ControllersM
     
         $action = $this->getAction();
         
+        $action = $this->modx->getOption("modimporter.default_action", null,'import/console');
         $source = (int)$this->modx->getOption("modimporter.media_source", null, $this->modx->getOption("default_media_source", null, 1));
         
         $this->addHtml('<script type="text/javascript">
