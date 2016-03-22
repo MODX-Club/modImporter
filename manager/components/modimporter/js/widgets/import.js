@@ -254,7 +254,7 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
             var out = this.getComponent('body');
             //  console.log(out);
             if (out) {
-                out.el.insertHtml('beforeEnd', msg);
+                out.el.insertHtml('afterBegin', msg);
                 // e.data = '';
                 out.el.scroll('b', out.el.getHeight(), true);
             }
