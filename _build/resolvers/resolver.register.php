@@ -25,6 +25,9 @@ if ($object->xpdo) {
 
         $manager->addField('modResource', 'externalKey');
         $manager->addIndex('modResource', 'externalKey');
+
+        $manager->addField('modResource', 'importId');
+        $manager->addIndex('modResource', 'importId');
         
         
         $modx->log(xPDO::LOG_LEVEL_INFO, 'Adding ext package');

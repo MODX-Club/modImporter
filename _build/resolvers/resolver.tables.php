@@ -11,9 +11,13 @@ if ($object->xpdo) {
 
       $manager = $modx->getManager();
       $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-      
+
       // adding xpdo objects
       # $manager->createObjectContainer('SamplePackageObject');
+      # $manager->createObjectContainer('SamplePackageObject');
+
+      $manager->createObjectContainer('modImporterExport');
+      $manager->createObjectContainer('modImporterImport');
 
       $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 

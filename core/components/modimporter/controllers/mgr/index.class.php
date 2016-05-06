@@ -12,9 +12,13 @@ class ControllersMgrManagerController extends modExtraManagerController{
         
         # print '<pre>';
         $namespace = $this->config['namespace'];
-        
+        $default_type = $this->modx->getOption("modimporter.default_action", null,'import/console');
+        $source = (int)$this->modx->getOption("modimporter.media_source", null, $this->modx->getOption("default_media_source", null, 1));
+
         $this->config['namespace_assets_path'] = $this->modx->call('modNamespace','translatePath',array(&$this->modx, $this->config['namespace_assets_path']));
-        
+        $this->config['source'] = $source;
+        $this->config['default_type'] = $default_type;
+
         $this->config['manager_url'] = 
             $this->config['assets'] = 
             $this->config['assets_url'] = 
@@ -61,12 +65,21 @@ class ControllersMgrManagerController extends modExtraManagerController{
         # $this->modx->regClientStartupScript('<script type="text/javascript">
         #     Shop.policies = '. $this->modx->toJSON($policies).';
         # </script>', true);
-         
-        $this->addJavascript($assets_url.'js/widgets/import.js'); 
-        
+        $this->addCss($assets_url.'css/bootstrap.buttons.css');
+        $this->addCss($assets_url.'css/main.css');
+        $this->addJavascript($assets_url.'js/modimporter.js'); 
+        $this->addJavascript($assets_url.'js/misc/mdi.combo.js');
+        $this->addJavascript($assets_url.'js/misc/mdi.utils.js');
+        $this->addJavascript($assets_url.'js/widgets/console.js'); 
+        $this->addJavascript($assets_url.'js/widgets/import.grid.js'); 
+        $this->addJavascript($assets_url.'js/widgets/export.grid.js'); 
+        $this->addJavascript($assets_url.'js/home.panel.js');
         
         $this->addHtml('<script type="text/javascript">
             modImporter.config = '. $this->modx->toJSON($this->config).';
+            Ext.onReady(function(){
+                MODx.add(new modImporter.panel.Import());    
+            });
         </script>');
         
         return;

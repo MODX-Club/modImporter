@@ -1,9 +1,9 @@
 <?php
 
 $xpdo_meta_map = array (
-  'xPDOSimpleObject' => 
-  array (
-  ),
+    'xPDOSimpleObject' =>
+        array (
+        ),
 );
 
 $externalKeyLength = $this->getOption("modimporter.external_key_length", null, 32);
@@ -17,33 +17,61 @@ $custom_fields = array(
             "externalKey"  => array(
                 "defaultValue"  => NULL,
                 "metaData"  => array (
-                  'dbtype' => $externalKeyType,
-                  'precision' => $externalKeyLength,
-                  'attributes' => '',
-                  'phptype' => $externalKeyPhpType,
-                  'null' => true,
-                  'index' => 'index',
+                    'dbtype' => $externalKeyType,
+                    'precision' => $externalKeyLength,
+                    'attributes' => '',
+                    'phptype' => $externalKeyPhpType,
+                    'null' => true,
+                    'index' => 'index',
+                ),
+            ),
+            "importId"  => array(
+                "defaultValue" => NULL,
+                "metaData"  => array(
+                    'dbtype' => 'int',
+                    'precision' => 10,
+                    'attributes' => 'unsigned',
+                    'phptype' => 'integer',
+                    'null' => true,
+                    'default' => null,
+                    'index' => 'index',
                 ),
             ),
         ),
-        
+
         "indexes"   => array(
-            'externalKey' => 
-            array (
-              'alias' => 'externalKey',
-              'primary' => false,
-              'unique' => false,
-              'type' => 'BTREE',
-              'columns' => 
-              array (
-                'externalKey' => 
+            'externalKey' =>
                 array (
-                  'length' => '',
-                  'collation' => 'A',
-                  'null' => true,
+                    'alias' => 'externalKey',
+                    'primary' => false,
+                    'unique' => false,
+                    'type' => 'BTREE',
+                    'columns' =>
+                        array (
+                            'externalKey' =>
+                                array (
+                                    'length' => '',
+                                    'collation' => 'A',
+                                    'null' => true,
+                                ),
+                        ),
                 ),
-              ),
-            ),
+            'importId' =>
+                array (
+                    'alias' => 'importId',
+                    'primary' => false,
+                    'unique' => false,
+                    'type' => 'BTREE',
+                    'columns' =>
+                        array (
+                            'importId' =>
+                                array (
+                                    'length' => '',
+                                    'collation' => 'A',
+                                    'null' => true,
+                                ),
+                        ),
+                ),
         ),
     ),
 );
@@ -54,7 +82,7 @@ foreach($custom_fields as $class => $class_data){
         $this->map[$class]['fields'][$field] = $data['defaultValue'];
         $this->map[$class]['fieldMeta'][$field] = $data['metaData'];
     }
-    
+
     if(!empty($class_data['indexes'])){
         foreach($class_data['indexes'] as $index => $data){
             $this->map[$class]['indexes'][$index] = $data;

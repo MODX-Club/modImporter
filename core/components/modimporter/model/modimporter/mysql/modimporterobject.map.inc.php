@@ -13,6 +13,7 @@ $xpdo_meta_map['modImporterObject']= array (
   array (
     'tmp_object_type' => NULL,
     'tmp_external_key' => '',
+    'tmp_import_id' => '',
     'tmp_resource_id' => NULL,
     'tmp_parent' => NULL,
     'tmp_title' => '',
@@ -37,6 +38,15 @@ $xpdo_meta_map['modImporterObject']= array (
       'precision' => $externalKeyLength,
       'phptype' => $externalKeyPhpType,
       'null' => true,
+      'index' => 'index',
+    ),
+    'tmp_import_id' => 
+    array (
+      'dbtype' => 'int',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => null,
       'index' => 'index',
     ),
     'tmp_resource_id' => 
@@ -123,6 +133,22 @@ $xpdo_meta_map['modImporterObject']= array (
           'length' => '',
           'collation' => 'A',
           'null' => false,
+        ),
+      ),
+    ),
+    'tmp_import_id' => 
+    array (
+      'alias' => 'tmp_resource_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'tmp_resource_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => true,
         ),
       ),
     ),

@@ -1,22 +1,9 @@
-// Консоль
-
-modImporter = {
-    window: {}
-    ,combo: {}
-    ,panel: {}
-    ,config: {}
-};
-
-// if(typeof modImporter.window == 'undefined'){
-//     modImporter.window = {};
-// }
-
 modImporter.window.Console  = function(config) {
     config = config || {};
     
     Ext.applyIf(config,{
         baseParams: {
-            action: config.action || 'console'
+            action: config.type || 'console'
         }
     });
     
@@ -55,13 +42,13 @@ modImporter.window.Console  = function(config) {
                 ,itemId: 'continueBtn'
                 ,disabled: true
                 ,scope: this
-                ,handler: this.StartImport
+                ,handler: this.submit
             },{
                 text: _('ok')
                 ,itemId: 'okBtn'
                 ,disabled: false
                 ,scope: this
-                ,handler: this.hide
+                ,handler: this.close
             }
         ]
         ,keys: [{
@@ -71,35 +58,32 @@ modImporter.window.Console  = function(config) {
             ,scope: this
         },{
             key: Ext.EventObject.ENTER
-            ,fn: this.hide
+            ,fn: this.close
             ,scope: this
         }]
         
         ,autoHeight: false
         
         ,url: modImporter.config.connector_url + 'connector.php'
-        
-        
+        , listeners: {
+            'close': function(){
+                
+            }
+        }
     });
-    
+    config.baseParams.action = config.baseParams.type || 'console';
     config.baseParams.output_format = 'json';
     config.baseParams.modimporter_step = config.step || 'modimporter_console_init';
     config.baseParams.modimporter_in_console_mode = true;   // Для отладки
     
     modImporter.window.Console.superclass.constructor.call(this,config);
     
-    this.on('show', this.StartImport);
-    // this.on('hide', this.close, this);
+    this.on('show', this.submit);
 };
 
 Ext.extend(modImporter.window.Console, MODx.Window,{
-    
-    StartImport: function(){
-        // console.log(this.submit);
-        this.submit();
-    }
-    
-    ,submit: function(close) {
+
+    submit: function(close) {
         // console.log(this);
         // return;
         close = close === false ? false : true;
@@ -264,189 +248,5 @@ Ext.extend(modImporter.window.Console, MODx.Window,{
             return;
         }
     }
-    
-    // ,close: function(){
-    //     console.log(this);
-    // }
+
 });
-
- 
-
-modImporter.panel.Import = function(config) {
-    config = config || {};
-    
-    this.config = config;
-    
-    Ext.applyIf(config,{
-        url: modImporter.config.connector_url + 'connector.php'
-        ,bodyStyle: 'padding: 10px 15px;'
-        // ,width: 400
-        ,layout: 'form'
-        ,items: [{
-            html: '<h2>modImporter</h2>'
-            , border: false
-            , bodyStyle: 'margin: 10px 0 10px 0'
-            , cls: 'modx-page-header'
-        }, {
-            xtype: 'modx-tabs'
-            , id: 'referral-settings-tabs'
-            , bodyStyle: 'padding: 10px'
-            , defaults: {border: false, autoHeight: true}
-            , border: true
-            , hideMode: 'offsets'
-            //,stateful: true
-            //,stateId: 'referral-settings-tabpanel'
-            //,stateEvents: ['tabchange']
-            //,getState:function() {return { activeTab:this.items.indexOf(this.getActiveTab())};}
-            , items: [{
-                    title: _('modimporter')
-                    ,items: [
-                        {
-                            html: '<p>Выберите файл для импорта</p>'
-                            , border: false
-                            , bodyCssClass: 'panel-desc'
-                            , bodyStyle: 'margin-bottom: 10px'
-                        }
-                        ,this.getFileBrowser()
-                        ,{
-                            layout: 'form'
-                            , bodyStyle: 'margin: 10px 0'
-                            , labelAlign: 'top'
-                            , items: [
-                                this.getActionList()
-                            ]
-                            
-                        }
-                        ,{ 
-                            border: false
-                            , bodyStyle: 'margin-bottom: 10px'
-                        }
-                        ,this.GetStartimportButton()
-                    ]
-                },{
-                    title: 'Экспорт'
-                    ,items: [
-                        {
-                            html: '<p>Уже скоро...</p>'
-                            , border: false
-                            , bodyCssClass: 'panel-desc'
-                            , bodyStyle: 'margin-bottom: 10px'
-                        }
-                    ]
-                }
-            ]
-        }            
-        ]
-        ,listeners: {
-            select: this.OnSelect
-        }
-    });
-    
-    modImporter.panel.Import.superclass.constructor.call(this,config);
-};
-
-Ext.extend(modImporter.panel.Import , MODx.Panel,{
-    
-    OnSelect: function(data){
-        
-        this.startimportButton.enable();
-    }
-    
-    ,GetStartimportButton: function(){
-        this.startimportButton = new Ext.Button({
-            text: 'Запустить импорт'
-            ,handler:  this.StartImport
-            ,scope: this
-            ,disabled: false
-        });
-        return this.startimportButton;
-    }
-    
-    ,StartImport: function(){
-        /*if(!this.pathname){
-            MODx.msg.alert('Ошибка', "Необходимо выбрать файл для импорта");
-            return;
-        }*/
-        /*console.log(this.FileBrowser);
-        console.log(this.FileBrowser.getValue());
-        console.log(this.FileBrowser.source);*/
-        
-        new modImporter.window.Console({        
-            'register'  : 'mgr'       
-            ,'topic' : '/npgitporter/import/source{$type}/'
-            ,url: this.url
-            ,baseParams:{
-                action: this.comboActionList.getValue() || 'console'
-                ,source: this.FileBrowser.source
-                ,filename: this.FileBrowser.getValue()
-            }
-        }).show();
-    }
-    
-    ,getFileBrowser: function(){
-        
-        this.FileBrowser = new MODx.combo.Browser({
-         
-                fieldLabel: 'Файл для загрузки'
-                ,width: 350
-                // ,hiddenName: 
-                ,source: this.config.source
-                ,listeners: {
-                    'select': {
-                        fn:function(data) {
-                            //console.log(data);
-                            //Ext.getCmp('tv'+this.config.tv).setValue(data.relativeUrl);
-                            //Ext.getCmp('tvbrowser'+this.config.tv).setValue(data.relativeUrl);
-                            this.fireEvent('select',data);
-                        },
-                        scope:this
-                    }
-                    /*,'change': {
-                        fn:function(cb,nv) {
-                            Ext.getCmp('tv'+this.config.tv).setValue(nv);
-                            this.fireEvent('select',{
-                                relativeUrl: nv
-                                ,url: nv
-                            });
-                        },
-                        scope:this
-                    }*/
-                }
-        });
-        return this.FileBrowser;
-    }
-    
-    ,getActionList: function(){
-        this.comboActionList = new MODx.combo.ComboBox({
-            name: 'action'
-            , fieldLabel: 'Формат'
-            , width: 350                                    
-            , hiddenName: 'action'
-            , displayField: 'name'
-            , valueField: 'action'
-            , editable: false
-            , fields: ['name', 'action']
-            , pageSize: 0
-            , emptyText: 'Выберите формат'
-            , hideMode: 'offsets'
-            , url: modImporter.config.connector_url + 'connector.php'
-            , baseParams: {
-                action: 'mgr/getactions'
-            }
-            ,listeners: {
-                'select': {
-                    fn:function(data) {
-                        console.log(modImporter.config);
-                    },
-                    scope:this
-                }
-            }
-        });
-        return this.comboActionList;
-    }
-    
-});
-
-Ext.reg('modimporter-panel-import', modImporter.panel.Import);
-
- 

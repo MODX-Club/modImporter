@@ -170,8 +170,6 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
                     
                     return $this->StepDropTmpTables();
                     break;
-                
-                default: ;
                     
                 
                 // Создание временных таблиц
@@ -583,7 +581,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         Один раз за сеанс 1С шлет только метод init
     */
     protected function StepDeactivate(){
-        
+        $this->setLastImportDate($this->getProperty('importId'));
         return $this->success("Импорт успешно завершен", null, xPDO::LOG_LEVEL_WARN);
     }
     
@@ -941,6 +939,12 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         }
         
         return $this->modx->getObject($className, $condition);
+    }
+
+    protected function setLastImportDate($id, $className = "modImporterImport"){
+        $import = $this->modx->getObject($className, $id);
+        $import->set('lastimportdon', date('Y-m-d H:i:s'));
+        return ($import->save()) ? true : false;
     }
     
     

@@ -10,8 +10,8 @@ define('NAMESPACE_NAME', PKG_NAME_LOWER);
 define('PKG_PATH', PKG_NAME_LOWER);
 define('PKG_CATEGORY', PKG_NAME);
 
-$pkg_version = '1.3.1';
-$pkg_release = 'beta';
+$pkg_version = '1.4.0';
+$pkg_release = 'alfa';
 define('PKG_VERSION', $pkg_version);
 define('PKG_RELEASE', $pkg_release);
 
