@@ -1,19 +1,18 @@
 <?php
 
-$pkg_name = 'modImporter';
+include_once __DIR__.'/package.php';
 
 /* define package */
-define('PKG_NAME', $pkg_name);
-define('PKG_NAME_LOWER',strtolower(PKG_NAME));
+define('PKG_NAME', $pkgName);
+define('PKG_NAME_LOWER', strtolower(PKG_NAME));
+define('PKG_NAME_UPPER', strtoupper(substr($pkgName, 0, 1)).substr($pkgName, 1));
 define('NAMESPACE_NAME', PKG_NAME_LOWER);
 
 define('PKG_PATH', PKG_NAME_LOWER);
 define('PKG_CATEGORY', PKG_NAME);
 
-$pkg_version = '1.4.0';
-$pkg_release = 'alfa';
-define('PKG_VERSION', $pkg_version);
-define('PKG_RELEASE', $pkg_release);
+define('PKG_VERSION', $pkgVersion);
+define('PKG_RELEASE', $pkgRelease);
 
 
 $mtime= microtime();
@@ -58,13 +57,13 @@ include_once $sources['builder_includes'] . 'namespace.php';
  */
 include_once $sources['builder_includes'] . 'mediasources.php';
 
-/* 
+/*
  * Create system settings via vehicle
  */
 include_once $sources['builder_includes'] . 'system.settings.php';
 
 /*
- * Create custom system settings via vehicle 
+ * Create custom system settings via vehicle
  */
 # include_once $sources['builder_includes'] . 'system.events.php';
 
@@ -105,7 +104,7 @@ include_once $sources['builder_includes'] . 'resolver.register.wrapper.php';
 $builder->putVehicle($vehicle);
 
 /*
- * Load Menu 
+ * Load Menu
  */
 include_once $sources['builder_includes'] . 'menu.php';
 

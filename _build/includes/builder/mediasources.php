@@ -22,7 +22,7 @@
 #     #   # ),
 #     # ),
 #   );
-# 
+#
 #   # foreach($mediaSources as & $mediaSource){
 #   #   $vehicle = $builder->createVehicle($mediaSource, $vehicleParams);
 #   #   $builder->putVehicle($vehicle);
@@ -102,9 +102,4 @@ $mediaSourceAccess->addOne($mediaSource, "Target");
 $vehicle = $builder->createVehicle($mediaSourceAccess, $vehicleParams);
 $builder->putVehicle($vehicle);
 
-$modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($mediaSources).' MediaSourceAccess.'); flush();
-
-
-
-
-
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($mediaSourceAccess).' MediaSourceAccess.'); flush();
