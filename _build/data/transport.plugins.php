@@ -29,7 +29,7 @@ if (!empty($content)) {
 
     $plugin->addMany($events, 'PluginEvents');
 
-    $modx->log(xPDO::LOG_LEVEL_INFO, 'Packaged in '.count($events).' Plugin Events.');
+    $modx->log(xPDO::LOG_LEVEL_INFO, count($events).' Plugin Events were added.');
     flush();
 
     $plugins[] = $plugin;

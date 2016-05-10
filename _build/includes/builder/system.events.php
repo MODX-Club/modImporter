@@ -15,5 +15,5 @@ foreach ($events as $event) {
     $vehicle = $builder->createVehicle($event, $attributes);
     $builder->putVehicle($vehicle);
 }
-$modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($events).' system events.'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, count($events).' system events were added.'); flush();
 unset($events, $event, $attributes);

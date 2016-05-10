@@ -19,6 +19,6 @@ $vehicle = $builder->createVehicle($namespace, array(
 
 $builder->putVehicle($vehicle);
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.NAMESPACE_NAME.' namespace.'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, NAMESPACE_NAME.' namespace was added.'); flush();
 
 unset($vehicle, $namespace);

@@ -1,11 +1,11 @@
 <?php
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in menu...'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, 'Menu adding initiated…'); flush();
 
 $menus = include $sources['data'].'transport.menu.php';
 
 if (!is_array($menus)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not package in menu.');
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not add menu.');
 } else {
     $attributes = array(
     xPDOTransport::PRESERVE_KEYS => true,
@@ -30,7 +30,7 @@ if (!is_array($menus)) {
     foreach ($menus as $menu) {
         $vehicle = $builder->createVehicle($menu, $attributes);
         $builder->putVehicle($vehicle);
-        $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.$menu->text.' menu.');
+        $modx->log(modX::LOG_LEVEL_INFO, $menu->text.' menu was added.');
     }
     unset($vehicle, $action);
 }

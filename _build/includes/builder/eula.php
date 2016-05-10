@@ -1,6 +1,6 @@
 <?php
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Adding package attributes and setup options...'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, 'Package attributes and setup options adding initiated…'); flush();
 
 $builder->setPackageAttributes(array(
   'license' => file_get_contents($sources['docs'].'license.txt'),

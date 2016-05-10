@@ -27,7 +27,7 @@
 #   #   $vehicle = $builder->createVehicle($mediaSource, $vehicleParams);
 #   #   $builder->putVehicle($vehicle);
 #   # }
-#   # $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($mediaSources).' MediaSources.'); flush();
+#   # $modx->log(modX::LOG_LEVEL_INFO,'Added in '.count($mediaSources).' MediaSources.'); flush();
 # }
 # unset($mediaSources,$vehicle,$vehicleParams);
 
@@ -96,4 +96,4 @@ $mediaSourceAccess->addOne($mediaSource, 'Target');
 $vehicle = $builder->createVehicle($mediaSourceAccess, $vehicleParams);
 $builder->putVehicle($vehicle);
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($mediaSourceAccess).' MediaSourceAccess.'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, count($mediaSourceAccess).' MediaSourceAccess were added.'); flush();

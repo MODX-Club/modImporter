@@ -9,12 +9,12 @@ $attributes = array(
 );
 
 if (!is_array($settings)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Adding settings failed.');
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Can\'t package settings.');
 }
 foreach ($settings as $setting) {
     $vehicle = $builder->createVehicle($setting, $attributes);
     $builder->putVehicle($vehicle);
 }
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Packaged in '.count($settings).' system settings.'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, count($settings).' system settings were added.'); flush();
 unset($settings, $setting, $attributes);
