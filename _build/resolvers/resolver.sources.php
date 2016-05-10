@@ -23,13 +23,6 @@ $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in ManagerPath'); flush();
 // Add console source
 $vehicle->resolve('file', array(
     'source' => $sources['source_console'],
-    'target' => "return MODX_CORE_PATH . 'components/';",
+    'target' => "return MODX_BASE_PATH . '/';",
 ));
 $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in ConsolePath'); flush();
-
-// Add site base path source
-# $vehicle->resolve('file',array(
-#     'source' => $sources['root'],
-#     'target' => "return MODX_BASE_PATH . 'samplepackage/';",
-# ));
-# $modx->log(modX::LOG_LEVEL_INFO,'Packaged in MibewPath'); flush();
