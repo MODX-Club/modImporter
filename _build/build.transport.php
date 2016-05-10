@@ -94,7 +94,10 @@ include_once $sources['resolvers'].'resolver.sources.php';
 /*
  * Adding resolvers
  */
-$modx->log(modX::LOG_LEVEL_INFO, 'Adding in PHP resolvers...'); flush();
+// resolve tables
+include_once $sources['builder_includes'].'resolver.tables.wrapper.php';
+
+ // register package
 include_once $sources['builder_includes'].'resolver.register.wrapper.php';
 // eof adding resolvers
 
@@ -108,7 +111,7 @@ include_once $sources['builder_includes'].'menu.php';
 /* now pack in the license file, readme and setup options */
 include_once $sources['builder_includes'].'eula.php';
 
-$modx->log(modX::LOG_LEVEL_INFO, 'Packing...'); flush();
+$modx->log(modX::LOG_LEVEL_INFO, 'We are packing now…'); flush();
 $builder->pack();
 
 $mtime = microtime();

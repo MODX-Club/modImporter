@@ -1,7 +1,6 @@
 <?php
 
-$pkgName = 'modImporter';
-$pkgNameLower = strtolower($pkgName);
+$pkgNameLower = $options['namespace'];
 
 if ($object->xpdo) {
     $modx = &$object->xpdo;
@@ -9,28 +8,34 @@ if ($object->xpdo) {
 
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
+      $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+      $manager = $modx->getManager();
+
+      $manager->addField('modResource', 'externalKey');
+      $manager->addIndex('modResource', 'externalKey');
+
+      $manager->addField('modResource', 'importId');
+      $manager->addIndex('modResource', 'importId');
+
+      $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+      $modx->log(xPDO::LOG_LEVEL_INFO, 'Fields were added');
+
     case xPDOTransport::ACTION_UPGRADE:
-      if ($modx instanceof modX) {
-          $modx->addExtensionPackage($pkgNameLower, "[[++core_path]]components/{$pkgNameLower}/model/", array(
+        if ($modx instanceof modX) {
+            $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+
+            $modx->addExtensionPackage($pkgNameLower, "[[++core_path]]components/{$pkgNameLower}/model/", array(
           // 'serviceName' => $pkgName,
           // 'serviceClass' => $pkgName,
         ));
 
-          $modx->addPackage($pkgNameLower, MODX_CORE_PATH."components/{$pkgNameLower}/model/", array(
+            $modx->addPackage($pkgNameLower, MODX_CORE_PATH."components/{$pkgNameLower}/model/", array(
           // 'serviceName' => $pkgName,
           // 'serviceClass' => $pkgName,
         ));
-
-          $manager = $modx->getManager();
-
-          $manager->addField('modResource', 'externalKey');
-          $manager->addIndex('modResource', 'externalKey');
-
-          $manager->addField('modResource', 'importId');
-          $manager->addIndex('modResource', 'importId');
-
-          $modx->log(xPDO::LOG_LEVEL_INFO, 'Adding ext package');
-      }
+            $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+            $modx->log(xPDO::LOG_LEVEL_INFO, 'Package was registered');
+        }
       break;
 
     case xPDOTransport::ACTION_UNINSTALL:
