@@ -1,31 +1,31 @@
 <?php
 
-class ControllersMgrManagerController extends modExtraManagerController{
-
+class ControllersMgrManagerController extends modExtraManagerController
+{
     private $build_mode = false;
 
-    public function initialize() {
-
+    public function initialize()
+    {
         $namespace = $this->config['namespace'];
-        $default_type = $this->modx->getOption("modimporter.default_action", null,'import/console');
-        $source = (int)$this->modx->getOption("modimporter.media_source", null, $this->modx->getOption("default_media_source", null, 1));
+        $default_type = $this->modx->getOption('modimporter.default_action', null, 'import/console');
+        $source = (int) $this->modx->getOption('modimporter.media_source', null, $this->modx->getOption('default_media_source', null, 1));
 
-        $this->config['namespace_assets_path'] = $this->modx->call('modNamespace','translatePath',array(&$this->modx, $this->config['namespace_assets_path']));
+        $this->config['namespace_assets_path'] = $this->modx->call('modNamespace', 'translatePath', array(&$this->modx, $this->config['namespace_assets_path']));
         $this->config['source'] = $source;
         $this->config['default_type'] = $default_type;
 
         $build_assets_url = str_replace($this->modx->getOption('base_path'), '/', $this->config['namespace_assets_path']);
         // try to check if it's an build mode (that's a little bit tricky check. if pos is 0 magic won't happen)
-        $this->build_mode = !!strpos($this->config['namespace_path'], 'build');
+        $this->build_mode = (bool) strpos($this->config['namespace_path'], 'build');
 
         $this->config['namespace_manager_url'] = $this->modx->getOption("{$namespace}.manager_url", null, $this->modx->getOption('manager_url')."components/{$namespace}/");
-        
-        if(!$this->build_mode){
-          $this->config['manager_url'] = $this->config['namespace_manager_url'];
-          $this->config['assets_url'] = $this->modx->getOption("{$namespace}.assets_url", null, $this->modx->getOption('assets_url')."components/{$namespace}/");
-        }else{
-          $this->config['assets_url'] = $build_assets_url;
-          $this->config['manager_url'] = str_replace("/assets/", "/manager/", $this->config['assets_url']);
+
+        if (!$this->build_mode) {
+            $this->config['manager_url'] = $this->config['namespace_manager_url'];
+            $this->config['assets_url'] = $this->modx->getOption("{$namespace}.assets_url", null, $this->modx->getOption('assets_url')."components/{$namespace}/");
+        } else {
+            $this->config['assets_url'] = $build_assets_url;
+            $this->config['manager_url'] = str_replace('/assets/', '/manager/', $this->config['assets_url']);
         }
 
         $this->config['connector_url'] = $this->config['namespace_manager_url'].'connectors/';
@@ -33,16 +33,20 @@ class ControllersMgrManagerController extends modExtraManagerController{
         return parent::initialize();
     }
 
-    public function getOption($key, $options = null, $default = null, $skipEmpty = false){
-        $options = array_merge($this->config, (array)$options);
+    public function getOption($key, $options = null, $default = null, $skipEmpty = false)
+    {
+        $options = array_merge($this->config, (array) $options);
+
         return $this->modx->getOption($key, $options, $default, $skipEmpty);
     }
 
-    public function getLanguageTopics() {
+    public function getLanguageTopics()
+    {
         return array("{$this->config['namespace']}:default");
     }
 
-    function loadCustomCssJs(){
+    public function loadCustomCssJs()
+    {
         parent::loadCustomCssJs();
 
         $assets_url = $this->getOption('manager_url');
@@ -73,7 +77,7 @@ class ControllersMgrManagerController extends modExtraManagerController{
         $this->addJavascript($assets_url.'js/home.panel.js');
 
         $this->addHtml('<script type="text/javascript">
-            modImporter.config = '. $this->modx->toJSON($this->config).';
+            modImporter.config = '.$this->modx->toJSON($this->config).';
             Ext.onReady(function(){
                 MODx.add(new modImporter.panel.Import());
             });
@@ -92,4 +96,3 @@ class ControllersMgrManagerController extends modExtraManagerController{
     #     return 'index.tpl';
     # }
 }
-?>

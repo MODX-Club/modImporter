@@ -1,13 +1,14 @@
 <?php
+
 $pkgName = 'SamplePackage';
 $pkgNameLower = strtolower($pkgName);
 
 if ($object->xpdo) {
-  switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
-      $modx =& $object->xpdo;
-      $modelPath = $modx->getOption("{$pkgNameLower}.core_path",null,$modx->getOption('core_path')."components/{$pkgNameLower}/").'model/';
-      $modx->addPackage($pkgName,$modelPath);
+      $modx = &$object->xpdo;
+      $modelPath = $modx->getOption("{$pkgNameLower}.core_path", null, $modx->getOption('core_path')."components/{$pkgNameLower}/").'model/';
+      $modx->addPackage($pkgName, $modelPath);
 
       $manager = $modx->getManager();
       $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
@@ -26,4 +27,5 @@ if ($object->xpdo) {
       break;
   }
 }
+
 return true;

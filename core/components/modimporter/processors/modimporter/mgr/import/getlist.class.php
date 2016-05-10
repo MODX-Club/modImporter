@@ -1,12 +1,13 @@
 <?php
 
-class modImporterImportGetListProcessor extends modObjectGetListProcessor {
-
+class modImporterImportGetListProcessor extends modObjectGetListProcessor
+{
     public $classKey = 'modImporterImport';
     public $defaultSortField = 'id';
     public $defaultSortDirection = 'desc';
 
-    public function prepareRow(xPDOObject $object) {
+    public function prepareRow(xPDOObject $object)
+    {
         $array = $object->toArray();
         $array['actions'] = array();
         // Edit
@@ -18,9 +19,9 @@ class modImporterImportGetListProcessor extends modObjectGetListProcessor {
             'button' => true,
             'menu' => true,
         );
+
         return $array;
     }
-
 }
 
 return 'modImporterImportGetListProcessor';

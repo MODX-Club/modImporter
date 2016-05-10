@@ -40,4 +40,4 @@ $_lang['mdi_menu_export_remove_confirm'] = 'Вы уверены, что хоти
 
 $_lang['mdi_action_start'] = 'Начать импорт';
 
-$_lang['mdi_select_file']  = 'Выберите файл';
+$_lang['mdi_select_file'] = 'Выберите файл';

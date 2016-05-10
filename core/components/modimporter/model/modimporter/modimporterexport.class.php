@@ -1,2 +1,5 @@
 <?php
-class modImporterExport extends xPDOSimpleObject {}
+
+class modImporterExport extends xPDOSimpleObject
+{
+}

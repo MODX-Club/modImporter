@@ -1,72 +1,95 @@
-.x-grid3-col-actions {
-    padding: 0px 0 3px 5px;
+.x-grid3-col-actions
+{
+    padding: 0 0 3px 5px;
 }
 
-ul.modimporter-row-actions {
+ul.modimporter-row-actions
+{
     margin: 0;
     padding: 0;
+
     list-style: none;
 }
 
-ul.modimporter-row-actions li {
+ul.modimporter-row-actions li
+{
     float: left;
 }
 
-ul.modimporter-row-actions .btn {
-    padding: 5px;
-    margin-right: 2px;
-    min-width: 26px;
+ul.modimporter-row-actions .btn
+{
     font-size: inherit;
+
+    min-width: 26px;
+    margin-right: 2px;
+    padding: 5px;
 }
 
-ul.modimporter-row-actions .btn:before {
+ul.modimporter-row-actions .btn:before
+{
     padding: 4px;
 }
 
-.modimporter-grid-row-disabled {
+.modimporter-grid-row-disabled
+{
     font-style: italic;
+
     opacity: .6;
     color: #555;
 }
 
-.action-red {
+.action-red
+{
     color: darkred !important;
 }
 
-.action-green {
+.action-green
+{
     color: darkgreen !important;
 }
 
-.action-blue {
+.action-blue
+{
     color: cadetblue !important;
 }
 
-.action-yellow {
+.action-yellow
+{
     color: goldenrod !important;
 }
 
-.action-gray {
+.action-gray
+{
     color: dimgray !important;
 }
 
-a.x-menu-item .x-menu-item-text, a.x-menu-item .x-menu-item-text .icon {
+a.x-menu-item .x-menu-item-text,
+a.x-menu-item .x-menu-item-text .icon
+{
     cursor: pointer;
 }
 
-a.x-menu-item .x-menu-item-text .icon {
+a.x-menu-item .x-menu-item-text .icon
+{
     line-height: 16px;
+
     top: auto;
 }
 
-.x-menu-list .icon {
+.x-menu-list .icon
+{
     min-width: 1em;
+
     text-align: center;
 }
 
-.x-menu-list-item:hover .icon {
+.x-menu-list-item:hover .icon
+{
     color: inherit !important;
 }
 
-.x-grid3-row td, .x-grid3-summary-row td {
+.x-grid3-row td,
+.x-grid3-summary-row td
+{
     vertical-align: middle;
 }

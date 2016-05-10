@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(dirname(__FILE__)). '/index.class.php';
+require_once dirname(dirname(__FILE__)).'/index.class.php';
 
-class ModimporterControllersMgrImportIndexManagerController extends ControllersMgrManagerController{
-
+class ModimporterControllersMgrImportIndexManagerController extends ControllersMgrManagerController
+{
 }

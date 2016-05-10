@@ -1,75 +1,63 @@
 <?php
 
-$xpdo_meta_map['modImporterImport']= array (
+$xpdo_meta_map['modImporterImport'] = array(
     'package' => 'modImporter',
     'version' => '1.1',
     'table' => 'modimporter_imports',
     'extends' => 'xPDOSimpleObject',
-    'fields' =>
-        array (
-            'name' => NULL,
+    'fields' => array(
+            'name' => null,
             'description' => '',
-            'format' => NULL,
-            'type' => NULL,
-            'source' => NULL,
-            'lastimportdon' => NULL,
+            'format' => null,
+            'type' => null,
+            'source' => null,
+            'lastimportdon' => null,
         ),
-    'fieldMeta' =>
-        array (
-            'name' =>
-                array (
+    'fieldMeta' => array(
+            'name' => array(
                     'dbtype' => 'varchar',
                     'precision' => '255',
                     'phptype' => 'string',
                     'null' => true,
                 ),
-            'description' =>
-                array (
+            'description' => array(
                     'dbtype' => 'text',
                     'phptype' => 'string',
                     'null' => false,
                 ),
-            'format' =>
-                array (
+            'format' => array(
                     'dbtype' => 'varchar',
                     'precision' => '50',
                     'phptype' => 'string',
                     'null' => true,
                 ),
-            'type' =>
-                array (
+            'type' => array(
                     'dbtype' => 'varchar',
                     'precision' => '255',
                     'phptype' => 'string',
                     'null' => true,
                 ),
-            'source' =>
-                array (
+            'source' => array(
                     'dbtype' => 'varchar',
                     'precision' => '500',
                     'phptype' => 'string',
                     'null' => true,
                 ),
-            'lastimportdon' =>
-                array (
+            'lastimportdon' => array(
                     'dbtype' => 'datetime',
                     'phptype' => 'datetime',
                     'null' => true,
                 ),
 
         ),
-    'indexes' =>
-        array (
-            'name' =>
-                array (
+    'indexes' => array(
+            'name' => array(
                     'alias' => 'name',
                     'primary' => false,
                     'unique' => false,
                     'type' => 'BTREE',
-                    'columns' =>
-                        array (
-                            'name' =>
-                                array (
+                    'columns' => array(
+                            'name' => array(
                                     'length' => '',
                                     'collation' => 'A',
                                     'null' => true,

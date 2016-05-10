@@ -1,10 +1,8 @@
 <?php
 
-class modImporterImportRemoveProcessor extends modObjectRemoveProcessor {
-
+class modImporterImportRemoveProcessor extends modObjectRemoveProcessor
+{
     public $classKey = 'modImporterImport';
-
-
 }
 
 return 'modImporterImportRemoveProcessor';

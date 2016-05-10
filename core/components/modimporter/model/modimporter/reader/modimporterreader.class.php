@@ -1,51 +1,48 @@
 <?php
 
-interface modImporterReaderInterface{
-    
-    
+interface modImporterReaderInterface
+{
     public function read(array $provider, $callback = null);
-    
 }
 
-
-abstract class modImporterReader extends modProcessor implements modImporterReaderInterface{
-    
-    
+abstract class modImporterReader extends modProcessor implements modImporterReaderInterface
+{
     public $modx;
     protected $processor;
     protected $reader;
     protected $initialized = false;
-    
-    
+
     # public function __construct(& $modx){
-        
+
     #    $this->modx = & $modx;
-        
+
     #}
-    
-    
-    public function initialize(modProcessor & $processor){
-        $this->processor = & $processor;
+
+    public function initialize(modProcessor &$processor)
+    {
+        $this->processor = &$processor;
         $ok = $this->processProperties();
-        
-        if($ok == true){
+
+        if ($ok == true) {
             $this->initialized = true;
         }
-        
+
         return $ok;
     }
-    
-    
-    protected function processProperties(){
+
+    protected function processProperties()
+    {
         return !$this->processor->hasErrors();
     }
-    
-    public function initialized(){
+
+    public function initialized()
+    {
         return $this->initialized;
     }
-    
-    public function process(){}
-    
-    
+
+    public function process()
+    {
+    }
+
     # abstract function read;
 }

@@ -33,4 +33,4 @@ $_lang['mdi_menu_remove'] = 'Удалить';
 
 $_lang['mdi_action_start'] = 'Начать импорт';
 
-$_lang['mdi_select_file']  = 'Выберите файл';
+$_lang['mdi_select_file'] = 'Выберите файл';

@@ -1,15 +1,18 @@
 <?php
 
-require_once (dirname(__FILE__) . '/update.class.php');
+require_once dirname(__FILE__).'/update.class.php';
 
-class modImporterImportUpdateFromGridProcessor extends modImporterImportUpdateProcessor {
+class modImporterImportUpdateFromGridProcessor extends modImporterImportUpdateProcessor
+{
+    public static function getInstance(modX &$modx, $className, $properties = array())
+    {
+        $processor = new self($modx, $properties);
 
-    public static function getInstance(modX &$modx, $className, $properties = array()) {
-        $processor = new modImporterImportUpdateFromGridProcessor($modx, $properties);
         return $processor;
     }
 
-    public function initialize() {
+    public function initialize()
+    {
         $data = $this->getProperty('data');
         if (empty($data)) {
             return $this->modx->lexicon('invalid_data');

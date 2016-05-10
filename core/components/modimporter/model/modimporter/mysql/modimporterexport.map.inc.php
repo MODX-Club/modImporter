@@ -1,41 +1,35 @@
 <?php
 
-$xpdo_meta_map['modImporterExport']= array (
+$xpdo_meta_map['modImporterExport'] = array(
     'package' => 'modImporter',
     'version' => '1.1',
     'table' => 'modimporter_exports',
     'extends' => 'xPDOSimpleObject',
-    'fields' =>
-        array (
-            'url' => NULL,
-            'exportdon' => NULL,
+    'fields' => array(
+            'url' => null,
+            'exportdon' => null,
             'params' => '',
         ),
-    'fieldMeta' =>
-        array (
-            'url' =>
-                array (
+    'fieldMeta' => array(
+            'url' => array(
                     'dbtype' => 'varchar',
                     'precision' => '500',
                     'phptype' => 'string',
                     'null' => true,
                 ),
-            'exportdon' =>
-                array (
+            'exportdon' => array(
                     'dbtype' => 'datetime',
                     'phptype' => 'datetime',
                     'null' => true,
                 ),
-            'params' =>
-                array (
+            'params' => array(
                     'dbtype' => 'text',
                     'phptype' => 'string',
                     'null' => false,
                 ),
 
         ),
-    'indexes' =>
-        array (
+    'indexes' => array(
 
         ),
 );

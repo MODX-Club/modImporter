@@ -10,10 +10,9 @@ $setting->fromArray(array(
     'xtype' => 'modx-combo-source',
     'namespace' => NAMESPACE_NAME,
     'area' => 'default',
-),'',true,true);
+), '', true, true);
 
 $settings[] = $setting;
-
 
 $setting_name = PKG_NAME_LOWER.'.external_key_type';
 $setting = $modx->newObject('modSystemSetting');
@@ -23,10 +22,9 @@ $setting->fromArray(array(
     'xtype' => 'textfield',
     'namespace' => NAMESPACE_NAME,
     'area' => 'default',
-),'',true,true);
+), '', true, true);
 
 $settings[] = $setting;
-
 
 $setting_name = PKG_NAME_LOWER.'.external_key_length';
 $setting = $modx->newObject('modSystemSetting');
@@ -36,10 +34,10 @@ $setting->fromArray(array(
     'xtype' => 'textfield',
     'namespace' => NAMESPACE_NAME,
     'area' => 'default',
-),'',true,true);
+), '', true, true);
 
 $settings[] = $setting;
 
+unset($setting, $setting_name);
 
-unset($setting,$setting_name);
 return $settings;
