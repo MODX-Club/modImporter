@@ -1,25 +1,25 @@
 <?php
 
 $pkgNameLower = $options['namespace'];
-
 if ($object->xpdo) {
     $modx = &$object->xpdo;
     $modelPath = $modx->getOption("{$pkgNameLower}.core_path", null, $modx->getOption('core_path')."components/{$pkgNameLower}/").'model/';
 
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
-      $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-      $manager = $modx->getManager();
+        if ($modx instanceof modX) {
+            $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+            $manager = $modx->getManager();
 
-      $manager->addField('modResource', 'externalKey');
-      $manager->addIndex('modResource', 'externalKey');
+            $manager->addField('modResource', 'externalKey');
+            $manager->addIndex('modResource', 'externalKey');
 
-      $manager->addField('modResource', 'importId');
-      $manager->addIndex('modResource', 'importId');
+            $manager->addField('modResource', 'importId');
+            $manager->addIndex('modResource', 'importId');
 
-      $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-      $modx->log(xPDO::LOG_LEVEL_INFO, 'Fields were added');
-
+            $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+            $modx->log(xPDO::LOG_LEVEL_INFO, 'Fields were added');
+        }
     case xPDOTransport::ACTION_UPGRADE:
         if ($modx instanceof modX) {
             $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
