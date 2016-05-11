@@ -1,3 +1,15 @@
+modImporter-1.4.2-alpha
+==============================
+- Allow to update db fields @ indexes on fly
+
+modImporter-1.4.1-alpha
+==============================
+- Export
+- Interface improvements
+- Multiple imports
+- Fixed bug with console dir
+- Code Reformat
+
 modImporter-1.3.1-beta
 ==============================
 - Reversed console loging
