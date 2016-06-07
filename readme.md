@@ -1,1 +1,1 @@
-core/components/modimporter/docs/readme.txt
+./core/components/modimporter/docs/readme.txt
