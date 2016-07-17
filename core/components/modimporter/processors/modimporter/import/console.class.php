@@ -583,7 +583,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor {
         Один раз за сеанс 1С шлет только метод init
     */
     protected function StepDeactivate(){
-        
+        $this->modx->cacheManager->refresh();
         return $this->success("Импорт успешно завершен", null, xPDO::LOG_LEVEL_WARN);
     }
     
