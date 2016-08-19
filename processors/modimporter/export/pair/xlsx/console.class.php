@@ -71,15 +71,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->getSheet(1)->setCellValue('F1', 'introtext');
         $objPHPExcel->getSheet(1)->setCellValue('G1', 'content');
         $objPHPExcel->getSheet(1)->setCellValue('H1', 'price');
-        $objPHPExcel->getSheet(1)->setCellValue('I1', 'color');
-        $objPHPExcel->getSheet(1)->setCellValue('J1', 'sizes');
-        $objPHPExcel->getSheet(1)->setCellValue('K1', 'article');
-        $objPHPExcel->getSheet(1)->setCellValue('L1', 'Состав');
-        $objPHPExcel->getSheet(1)->setCellValue('M1', 'Страна производства');
-        $objPHPExcel->getSheet(1)->setCellValue('N1', 'Сезон');
-        $objPHPExcel->getSheet(1)->setCellValue('O1', 'Коллекция');
-        $objPHPExcel->getSheet(1)->setCellValue('P1', 'Новинка');
-        $objPHPExcel->getSheet(1)->setCellValue('Q1', 'Таблица размеров');
+        $objPHPExcel->getSheet(1)->setCellValue('I1', 'article');
         
         // $products = $this->modx->getCollection('modResource', array(
         //     'template'  => 3, 
@@ -103,32 +95,8 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             $objPHPExcel->getSheet(1)->setCellValue('F'.$idx, $product->introtext);
             $objPHPExcel->getSheet(1)->setCellValue('G'.$idx, $product->content);
             $objPHPExcel->getSheet(1)->setCellValue('H'.$idx, $product->price);
-            $objPHPExcel->getSheet(1)->setCellValue('K'.$idx, $product->article);
-            $objPHPExcel->getSheet(1)->setCellValue('L'.$idx, $product->getTVvalue(16));       // Состав
-            $objPHPExcel->getSheet(1)->setCellValue('M'.$idx, $product->getTVvalue(17));       // Страна
-            $objPHPExcel->getSheet(1)->setCellValue('N'.$idx, $product->getTVvalue(18));       // Сезон
-            $objPHPExcel->getSheet(1)->setCellValue('O'.$idx, $product->getTVvalue(19));       // Коллекция
-            $objPHPExcel->getSheet(1)->setCellValue('P'.$idx, $product->getTVvalue(8));       // Новинка
-            $objPHPExcel->getSheet(1)->setCellValue('Q'.$idx, $product->getTVvalue(25) ? $this->modx->getObject('modResource',$product->getTVvalue(25))->pagetitle : '');       // Таблица размеров
+            $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $product->article);
             
-            $options = $product->getTVvalue('options');
-            if($options){
-                $options = json_decode($options,1);
-                
-                $i = 0;
-                $count = count($options);
-                foreach($options as $option){
-                    
-                    $i++;
-                    
-                    $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $option['color']);
-                    $objPHPExcel->getSheet(1)->setCellValue('J'.$idx, $option['sizes']);
-                    
-                    if($count > $i) {
-                        $idx++; 
-                    }
-                }
-            }
             // print "\n".$idx;
             
             // die("OK");
@@ -136,17 +104,6 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             $idx++;
         }
         
-        // $data = array();
-        // $fieldlist = array();
-        // $fields = $this->modx->getFields('modResource');
-        // foreach ($fields as $k => $v) {
-        //     $fieldlist[] = $k;
-        // }
-        // $data[] = $fieldlist;
-        // $resources = $this->modx->getCollection('modResource');
-        // foreach ($resources as $res) {
-        //     $data[] = $res->toArray();
-        // }
         return $this->saveFile($filename, $objPHPExcel);
         
     }
@@ -163,7 +120,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
     protected function saveFile($filename, $objPHPExcel)
     {
         
-        $exportPath = MODX_BASE_PATH.'assets/export/';
+        $exportPath = $this->getImportPath();
         $file = $exportPath.$filename;
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
         $objWriter->save($file);
