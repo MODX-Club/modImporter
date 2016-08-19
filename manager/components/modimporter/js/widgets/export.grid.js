@@ -23,7 +23,11 @@ modImporter.grid.ExportGrid = function(config) {
       , {
         header: _('mdi_url'),
         dataIndex: 'url',
-        width: 150
+        width: 150,
+        renderer: function(value, cell, record){
+            var url = MODx.config.connectors_url + "index.php?action=browser/file/download&download=1&file="+ value +"&HTTP_MODAUTH="+ MODx.siteId+"&source=" + MODx.config['modimporter.media_source'];
+            return '<a href="'+ url +'">'+ value +'</a>';
+        }
       }
       , {
         header: _('mdi_exportdon'),

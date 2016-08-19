@@ -17,17 +17,37 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         
         $this->filename = $_SESSION['modImporter']['export']['filename'];
         
+        $this->setDefaultProperties(array(
+            # Временно
+            'filename' => basename($this->getProperty('file')),
+            "category_template"     => (int)$this->modx->getOption("modimporter.category_template_id", null, false),
+            "product_template"     => (int)$this->modx->getOption("modimporter.product_template_id", null, false),
+        ));
+        
+        if(!$this->getProperty("category_template")){
+            return "Не указан ID шаблона категорий. Проверьте системную настройку modImporter.category_template_id";
+        }
+        
+        if(!$this->getProperty("product_template")){
+            return "Не указан ID шаблона товаров. Проверьте системную настройку modImporter.product_template_id";
+        }
+        
         return parent::initialize();
     }
     
     protected function PrepareExportData()
     {
-        $data = $this->modx->getCollection('modResource', array('template:IN'=>array(2,3)));
-        foreach ($data as $r) {
-            if (!$r->externalKey) {
+        foreach ($this->modx->getIterator('modResource', array(
+            'template:IN'=>array(
+                $this->getProperty("category_template"),
+                $this->getProperty("product_template"),
+            ),
+            "externalKey"   => "",
+        )) as $r) {
+            # if (!$r->externalKey) {
                 $r->set('externalKey', 'export-'.$r->id);
                 $r->save();
-            }
+            # }
         }
     }
     
@@ -49,7 +69,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->getSheet(0)->setCellValue('C1', 'parent');
         $objPHPExcel->getSheet(0)->setCellValue('D1', 'externalKey');
 
-        $categories = $this->modx->getCollection('modResource', array('template'=> 2));
+        $categories = $this->modx->getCollection('modResource', array('template'=> $this->getProperty("category_template")));
         
         $idx = 2;
         
@@ -71,15 +91,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->getSheet(1)->setCellValue('F1', 'introtext');
         $objPHPExcel->getSheet(1)->setCellValue('G1', 'content');
         $objPHPExcel->getSheet(1)->setCellValue('H1', 'price');
-        $objPHPExcel->getSheet(1)->setCellValue('I1', 'color');
-        $objPHPExcel->getSheet(1)->setCellValue('J1', 'sizes');
-        $objPHPExcel->getSheet(1)->setCellValue('K1', 'article');
-        $objPHPExcel->getSheet(1)->setCellValue('L1', 'Состав');
-        $objPHPExcel->getSheet(1)->setCellValue('M1', 'Страна производства');
-        $objPHPExcel->getSheet(1)->setCellValue('N1', 'Сезон');
-        $objPHPExcel->getSheet(1)->setCellValue('O1', 'Коллекция');
-        $objPHPExcel->getSheet(1)->setCellValue('P1', 'Новинка');
-        $objPHPExcel->getSheet(1)->setCellValue('Q1', 'Таблица размеров');
+        $objPHPExcel->getSheet(1)->setCellValue('I1', 'article');
         
         // $products = $this->modx->getCollection('modResource', array(
         //     'template'  => 3, 
@@ -90,7 +102,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $idx = 2;
         
         foreach($this->modx->getIterator('modResource', array(
-            'template'  => 3, 
+            'template'  => $this->getProperty("product_template"), 
             "deleted"   => 0,
             // "id:in"    => [381, 199, 407,]
         )) as $product){
@@ -103,32 +115,8 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             $objPHPExcel->getSheet(1)->setCellValue('F'.$idx, $product->introtext);
             $objPHPExcel->getSheet(1)->setCellValue('G'.$idx, $product->content);
             $objPHPExcel->getSheet(1)->setCellValue('H'.$idx, $product->price);
-            $objPHPExcel->getSheet(1)->setCellValue('K'.$idx, $product->article);
-            $objPHPExcel->getSheet(1)->setCellValue('L'.$idx, $product->getTVvalue(16));       // Состав
-            $objPHPExcel->getSheet(1)->setCellValue('M'.$idx, $product->getTVvalue(17));       // Страна
-            $objPHPExcel->getSheet(1)->setCellValue('N'.$idx, $product->getTVvalue(18));       // Сезон
-            $objPHPExcel->getSheet(1)->setCellValue('O'.$idx, $product->getTVvalue(19));       // Коллекция
-            $objPHPExcel->getSheet(1)->setCellValue('P'.$idx, $product->getTVvalue(8));       // Новинка
-            $objPHPExcel->getSheet(1)->setCellValue('Q'.$idx, $product->getTVvalue(25) ? $this->modx->getObject('modResource',$product->getTVvalue(25))->pagetitle : '');       // Таблица размеров
+            $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $product->article);
             
-            $options = $product->getTVvalue('options');
-            if($options){
-                $options = json_decode($options,1);
-                
-                $i = 0;
-                $count = count($options);
-                foreach($options as $option){
-                    
-                    $i++;
-                    
-                    $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $option['color']);
-                    $objPHPExcel->getSheet(1)->setCellValue('J'.$idx, $option['sizes']);
-                    
-                    if($count > $i) {
-                        $idx++; 
-                    }
-                }
-            }
             // print "\n".$idx;
             
             // die("OK");
@@ -136,17 +124,6 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             $idx++;
         }
         
-        // $data = array();
-        // $fieldlist = array();
-        // $fields = $this->modx->getFields('modResource');
-        // foreach ($fields as $k => $v) {
-        //     $fieldlist[] = $k;
-        // }
-        // $data[] = $fieldlist;
-        // $resources = $this->modx->getCollection('modResource');
-        // foreach ($resources as $res) {
-        //     $data[] = $res->toArray();
-        // }
         return $this->saveFile($filename, $objPHPExcel);
         
     }
@@ -163,7 +140,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
     protected function saveFile($filename, $objPHPExcel)
     {
         
-        $exportPath = MODX_BASE_PATH.'assets/export/';
+        $exportPath = $this->getImportPath();
         $file = $exportPath.$filename;
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
         $objWriter->save($file);
