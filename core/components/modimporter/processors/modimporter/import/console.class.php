@@ -504,19 +504,20 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor
         К примеру так делает 1С (может отдельно слать картинки, отдельно каталог, отдельно товарные предложения).
         Один раз за сеанс 1С шлет только метод init
     */
-    protected function StepDeactivate()
-    {
-        $this->setLastImportDate($this->getProperty('importId'));
 
-        return $this->success('Импорт успешно завершен', null, xPDO::LOG_LEVEL_WARN);
+    protected function StepDeactivate(){
+        $this->modx->cacheManager->refresh();
+        return $this->success("Импорт успешно завершен", null, xPDO::LOG_LEVEL_WARN);
     }
-
-    protected function &getSource()
-    {
-        if (!$this->source) {
-            $source_id = $this->getProperty('source');
-
-            if (
+    
+    
+    protected function & getSource(){
+        
+        if(!$this->source){
+            
+            $source_id = $this->getProperty("source");
+            
+            if(
                 $source_id
                 and $source = $this->modx->getObject('sources.modMediaSource', $source_id)
                 and $source->initialize()
