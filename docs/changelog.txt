@@ -1,0 +1,65 @@
+modImporter-1.5.0-beta
+==============================
+- Added XLSX export-import
+
+
+modImporter-1.4.2-alpha
+==============================
+- Allow to update db fields @ indexes on fly
+
+
+modImporter-1.4.1-alpha
+==============================
+- Export
+- Interface improvements
+- Multiple imports
+- Fixed bug with console dir
+- Code Reformat
+
+
+modImporter-1.3.1-beta
+==============================
+- Reversed console loging
+- Minor bugfix
+
+
+modImporter-1.3.0-beta
+==============================
+- Update manager interface
+- Code refactoring
+
+
+modImporter-1.2.0-beta
+==============================
+- Added CLI-mode
+- Code refactoring
+- Added print_r output format
+
+
+modImporter-1.1.2-beta
+==============================
+- Added Continue button
+- Minor bugfix
+
+
+modImporter-1.1.1-beta
+==============================
+- Added unzip processor
+- Set article key field length to 36
+
+
+modImporter-1.1.0-beta
+==============================
+- Added CSV-reader
+- Added Console Extra debug script
+
+
+modImporter-1.0.1-beta
+==============================
+- Added empty controllers
+
+
+modImporter-1.0.0-beta
+==============================
+
+- First release
