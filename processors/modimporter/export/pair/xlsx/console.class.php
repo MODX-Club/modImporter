@@ -17,17 +17,37 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         
         $this->filename = $_SESSION['modImporter']['export']['filename'];
         
+        $this->setDefaultProperties(array(
+            # Временно
+            'filename' => basename($this->getProperty('file')),
+            "category_template"     => (int)$this->modx->getOption("modImporter.category_template_id", null, false),
+            "product_template"     => (int)$this->modx->getOption("modImporter.product_template_id", null, false),
+        ));
+        
+        if(!$this->getProperty("category_template")){
+            return "Не указан ID шаблона категорий. Проверьте системную настройку modImporter.category_template_id";
+        }
+        
+        if(!$this->getProperty("product_template")){
+            return "Не указан ID шаблона товаров. Проверьте системную настройку modImporter.product_template_id";
+        }
+        
         return parent::initialize();
     }
     
     protected function PrepareExportData()
     {
-        $data = $this->modx->getCollection('modResource', array('template:IN'=>array(2,3)));
-        foreach ($data as $r) {
-            if (!$r->externalKey) {
+        foreach ($this->modx->getIterator('modResource', array(
+            'template:IN'=>array(
+                $this->getProperty("category_template"),
+                $this->getProperty("product_template"),
+            ),
+            "externalKey"   => "",
+        )) as $r) {
+            # if (!$r->externalKey) {
                 $r->set('externalKey', 'export-'.$r->id);
                 $r->save();
-            }
+            # }
         }
     }
     
@@ -49,7 +69,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->getSheet(0)->setCellValue('C1', 'parent');
         $objPHPExcel->getSheet(0)->setCellValue('D1', 'externalKey');
 
-        $categories = $this->modx->getCollection('modResource', array('template'=> 2));
+        $categories = $this->modx->getCollection('modResource', array('template'=> $this->getProperty("category_template")));
         
         $idx = 2;
         
@@ -82,7 +102,7 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $idx = 2;
         
         foreach($this->modx->getIterator('modResource', array(
-            'template'  => 3, 
+            'template'  => $this->getProperty("product_template"), 
             "deleted"   => 0,
             // "id:in"    => [381, 199, 407,]
         )) as $product){

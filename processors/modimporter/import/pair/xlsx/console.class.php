@@ -10,7 +10,17 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
         $this->setDefaultProperties(array(
             # Временно
             'filename' => basename($this->getProperty('file')),
+            "category_template"     => (int)$this->modx->getOption("modImporter.category_template_id", null, false),
+            "product_template"     => (int)$this->modx->getOption("modImporter.product_template_id", null, false),
         ));
+        
+        if(!$this->getProperty("category_template")){
+            return "Не указан ID шаблона категорий. Проверьте системную настройку modImporter.category_template_id";
+        }
+        
+        if(!$this->getProperty("product_template")){
+            return "Не указан ID шаблона товаров. Проверьте системную настройку modImporter.product_template_id";
+        }
 
         return parent::initialize();
     }
@@ -85,7 +95,7 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             $data = array(
                 "pagetitle" => $tmp_object->tmp_title,
                 "parent"    => $tmp_object->tmp_parent,
-                "template"      => 2,
+                "template"      => $this->getProperty("category_template"),
                 "published"     => 1,
                 "isfolder"      => 1,
             );
@@ -327,7 +337,7 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
                 // "class_key" => 'ShopmodxResourceProduct',
                 "published" => 1,
                 "isfolder"  => 0,
-                "template"  => 3,
+                "template"  => $this->getProperty("product_template"),
                 "currency"  => 79,
             ));
             
