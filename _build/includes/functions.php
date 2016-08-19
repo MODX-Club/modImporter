@@ -1,6 +1,6 @@
 <?php
 /**
- * modExtra
+ * modExtra.
  *
  * Copyright 2010 by Shaun McCormick <shaun+modextra@modx.com>
  *
@@ -16,32 +16,40 @@
  * You should have received a copy of the GNU General Public License along with
  * modExtra; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * @package modextra
  */
 /**
- * Helper method for grabbing files
- *
- * @package modextra
- * @subpackage build
+ * Helper method for grabbing files.
  */
 
 /**
  * @param string $filename
+ *
  * @return mixed|string
  */
-function getSnippetContent($filename) {
-  global $modx;
-  
+function getSnippetContent($filename)
+{
+    global $modx;
+
   // print "<br />Try to open file: {$filename}<br />\n";
-  if(!is_file($filename)){
-    $modx->log(modX::LOG_LEVEL_ERROR,"Element doesn't exist! ({$filename}).");
-    return '';
+  if (!is_file($filename)) {
+      $modx->log(modX::LOG_LEVEL_ERROR, "Element doesn't exist! ({$filename}).");
+
+      return '';
   }
-  
-  $o = file_get_contents($filename);
-  $o = str_replace('<?php','',$o);
-  $o = str_replace('?>','',$o);
-  $o = trim($o);
-  return $o;
+
+    $o = file_get_contents($filename);
+    $o = str_replace('<?php', '', $o);
+    $o = str_replace('?>', '', $o);
+    $o = trim($o);
+
+    return $o;
+}
+
+function getBuildPath($path)
+{
+    global $modx;
+
+    $base_path = $modx->getOption('base_path');
+
+    return str_replace($base_path, '{base_path}', $path);
 }

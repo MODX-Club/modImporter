@@ -509,7 +509,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor
         $this->setLastImportDate($this->getProperty('importId'));
 
         $this->modx->cacheManager->refresh();
-        
+
         return $this->success('Импорт успешно завершен', null, xPDO::LOG_LEVEL_WARN);
     }
 

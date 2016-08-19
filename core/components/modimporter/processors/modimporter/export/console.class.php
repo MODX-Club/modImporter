@@ -423,7 +423,11 @@ class modImporterExportConsoleProcessor extends modObjectProcessor
             return $this->failure('Не были получены данные для экспорта');
         }
 
+<<<<<<< HEAD
         $exportPath = $this->getImportPath();
+=======
+        $exportPath = $this->getImportPath().'export/';
+>>>>>>> origin/develop
         $ABS_FILE_NAME = $exportPath.$filename;
 
         if (!$fp = fopen($ABS_FILE_NAME, 'w')) {

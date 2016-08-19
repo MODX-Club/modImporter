@@ -21,17 +21,17 @@ $mediaSources = array();
 #     "lexicon" => "core:source",
 #   )
 # );
-# 
+#
 # $mediaSource = $modx->newObject('sources.modMediaSource', array(
 #  'name' => 'modImporter import files',
 #  'class_key' => 'sources.modFileMediaSource',
 #  'description'   => 'Файлы импорта',//PKG_NAME_LOWER.' Core Source',
 #  'properties' => $params,
 # ));
-# 
+#
 # $mediaSources[] = $mediaSource;
 # unset($mediaSource);
-# 
+#
 # $params = array(
 #   "basePath" => array(
 #     "name" => "basePath",
@@ -51,17 +51,17 @@ $mediaSources = array();
 #     "lexicon" => "core:source",
 #   )
 # );
-# 
+#
 # $mediaSource = $modx->newObject('sources.modMediaSource', array(
 #  'name' => PKG_NAME_LOWER.'_assets',
 #  'class_key' => 'sources.modFileMediaSource',
 #  'description'   => 'assets/components/'.PKG_PATH.'/',//PKG_NAME_LOWER.' Assets Source',
 #  'properties' => $params,
 # ));
-# 
+#
 # $mediaSources[] = $mediaSource;
 # unset($mediaSource);
-# 
+#
 # $params = array(
 #   "basePath" => array(
 #     "name" => "basePath",
@@ -81,18 +81,15 @@ $mediaSources = array();
 #     "lexicon" => "core:source",
 #   )
 # );
-# 
+#
 # $mediaSource = $modx->newObject('sources.modMediaSource', array(
 #  'name' => PKG_NAME_LOWER.'_manager',
 #  'class_key' => 'sources.modFileMediaSource',
 #  'description'   => 'manager/components/'.PKG_PATH.'/',//PKG_NAME_LOWER.' Manager Source',
 #  'properties' => $params,
 # ));
-# 
+#
 # $mediaSources[] = $mediaSource;
 # unset($mediaSource);
 
-
 return $mediaSources;
-
-?>

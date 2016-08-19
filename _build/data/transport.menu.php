@@ -21,16 +21,14 @@ $menu->fromArray(array(
   'parent' => 'components',
   'description' => NAMESPACE_NAME.'.desc',
   # 'icon' => 'images/icons/plugin.gif',
-  'action'      => 'controllers/mgr/import/index',
-  'params'      => '',
-  'handler'     => '',
-  'menuindex'   => $menuindex++,
+  'action' => 'controllers/mgr/import/index',
+  'params' => '',
+  'handler' => '',
+  'menuindex' => $menuindex++,
   'permissions' => 'modimporter',
-  'namespace'   => NAMESPACE_NAME,
-),'',true,true);
+  'namespace' => NAMESPACE_NAME,
+), '', true, true);
 
 $menus[] = $menu;
-
-
 
 return $menus;

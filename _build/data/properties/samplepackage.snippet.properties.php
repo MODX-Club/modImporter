@@ -17,8 +17,8 @@ $properties = array(
     'desc' => "prop_{$pkgName}.{$snippetName}_list_desc",
     'type' => 'list',
     'options' => array(
-      array('text' => "prop_{$pkgName}.{$snippetName}_asc",'value' => 'ASC'),
-      array('text' => "prop_{$pkgName}.{$snippetName}_desc",'value' => 'DESC'),
+      array('text' => "prop_{$pkgName}.{$snippetName}_asc", 'value' => 'ASC'),
+      array('text' => "prop_{$pkgName}.{$snippetName}_desc", 'value' => 'DESC'),
     ),
     'value' => 'DESC',
     'lexicon' => "{$pkgName}:properties",
