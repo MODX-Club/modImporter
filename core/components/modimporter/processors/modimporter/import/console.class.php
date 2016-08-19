@@ -506,18 +506,18 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor
     */
 
     protected function StepDeactivate(){
+        $this->setLastImportDate($this->getProperty('importId'));
+
         $this->modx->cacheManager->refresh();
-        return $this->success("Импорт успешно завершен", null, xPDO::LOG_LEVEL_WARN);
+
+        return $this->success('Импорт успешно завершен', null, xPDO::LOG_LEVEL_WARN);
     }
-    
-    
-    protected function & getSource(){
-        
-        if(!$this->source){
-            
-            $source_id = $this->getProperty("source");
-            
-            if(
+
+    protected function &getSource(){
+        if (!$this->source) {
+            $source_id = $this->getProperty('source');
+
+            if (
                 $source_id
                 and $source = $this->modx->getObject('sources.modMediaSource', $source_id)
                 and $source->initialize()
@@ -529,8 +529,7 @@ class modModimporterImportConsoleProcessor extends modObjectProcessor
         return $this->source;
     }
 
-    protected function getImportPath()
-    {
+    protected function getImportPath(){
         if (!$source = &$this->getSource()) {
             return false;
         }
