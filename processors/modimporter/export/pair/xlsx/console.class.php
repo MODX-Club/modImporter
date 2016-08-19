@@ -20,8 +20,8 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $this->setDefaultProperties(array(
             # Временно
             'filename' => basename($this->getProperty('file')),
-            "category_template"     => (int)$this->modx->getOption("modImporter.category_template_id", null, false),
-            "product_template"     => (int)$this->modx->getOption("modImporter.product_template_id", null, false),
+            "category_template"     => (int)$this->modx->getOption("modimporter.category_template_id", null, false),
+            "product_template"     => (int)$this->modx->getOption("modimporter.product_template_id", null, false),
         ));
         
         if(!$this->getProperty("category_template")){
