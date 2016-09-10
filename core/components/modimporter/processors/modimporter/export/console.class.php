@@ -74,7 +74,7 @@ class modImporterExportConsoleProcessor extends modObjectProcessor
             'source' => (bool) $this->modx->getOption('modimporter.media_source', null, $this->modx->getOption('default_media_source', null, 1)),
             'modimporter_response_delay' => 0,
             'modimporter_send_redirect_headers' => 0,        // for local cURL mode
-            "useMinishop"   => (int)$this->modx->loadClass("msProduct"),
+            "useMinishop"   => (bool)$this->modx->loadClass("msProduct"),
         ));
 
         $this->setProperties(array(
