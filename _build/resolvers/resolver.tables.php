@@ -57,39 +57,40 @@ $mimp_update_indexes = function ($modx, $class_name) {
 if ($object->xpdo) {
     $modx = &$object->xpdo;
 
-    if ($modx instanceof modX) {
-        $modelPath = $modx->getOption("{$pkgNameLower}.core_path", null, $modx->getOption('core_path')."components/{$pkgNameLower}/").'model/';
-        $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-        $modx->addPackage($pkgNameLower, $modelPath);
-        $manager = $modx->getManager();
+    if (!($modx instanceof modX)) {
+        return;
     }
+    
+    $modelPath = $modx->getOption("{$pkgNameLower}.core_path", null, $modx->getOption('core_path')."components/{$pkgNameLower}/").'model/';
+    $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+    $modx->addPackage($pkgNameLower, $modelPath);
+    $manager = $modx->getManager();
 
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-    case xPDOTransport::ACTION_INSTALL:
-        if ($modx instanceof modX) {
+        case xPDOTransport::ACTION_INSTALL:
+        case xPDOTransport::ACTION_UPGRADE:
             // adding xpdo objects
             $objects = array('modImporterExport', 'modImporterImport', 'modImporterObject');
             foreach ($objects as $o) {
                 $manager->createObjectContainer($o);
             }
-
+    
             $modx->setLogLevel(modX::LOG_LEVEL_INFO);
             $modx->log(xPDO::LOG_LEVEL_INFO, 'Tables were added');
-        }
-        break;
-    case xPDOTransport::ACTION_UPGRADE:
-        if ($modx instanceof modX) {
-            $objects = array('modImporterExport', 'modImporterImport', 'modImporterObject');
-            foreach ($objects as $o) {
-                $mimp_update_fields($modx, $o);
-                $mimp_update_indexes($modx, $o);
-            }
+            
+            # if($options[xPDOTransport::PACKAGE_ACTION] == xPDOTransport::ACTION_UPGRADE){
+                $objects = array('modImporterExport', 'modImporterImport', 'modImporterObject');
+                foreach ($objects as $o) {
+                    $mimp_update_fields($modx, $o);
+                    $mimp_update_indexes($modx, $o);
+                }
+    
+                $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+                $modx->log(xPDO::LOG_LEVEL_INFO, 'Tables were upgraded');
+            # }
+            break;
+    }
 
-            $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-            $modx->log(xPDO::LOG_LEVEL_INFO, 'Tables were upgraded');
-        }
-        break;
-  }
 }
 
 return true;

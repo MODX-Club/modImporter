@@ -250,7 +250,7 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             $tmp_object->tmp_processed = 1;
             $tmp_object->save();
             
-            if($resource = $this->modx->getObject("modResource", $tmp_object->product_id)){
+            if($resource = $this->modx->getObject("modResource", (int)$tmp_object->product_id)){
                 
     
                 $data = $tmp_object->toArray();

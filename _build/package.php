@@ -1,6 +1,6 @@
 <?php
 
 $pkgName = 'modImporter';
-$pkgVersion = '1.5.0';
-$pkgRelease = 'alpha';
+$pkgVersion = '1.6.0';
+$pkgRelease = 'beta';
 $pkgDebug = false;

@@ -71,9 +71,10 @@ class modImporterExportConsoleProcessor extends modObjectProcessor
             'use_zip' => $this->modx->getOption('modimporter.use_zip', null, true),
             'file_limit' => $this->modx->getOption('modimporter.use_zip.file_limit', null, 1024000),
             'output_format' => '',      // json or false
-            'source' => (int) $this->modx->getOption('modimporter.media_source', null, $this->modx->getOption('default_media_source', null, 1)),
+            'source' => (bool) $this->modx->getOption('modimporter.media_source', null, $this->modx->getOption('default_media_source', null, 1)),
             'modimporter_response_delay' => 0,
             'modimporter_send_redirect_headers' => 0,        // for local cURL mode
+            "useMinishop"   => (int)$this->modx->loadClass("msProduct"),
         ));
 
         $this->setProperties(array(

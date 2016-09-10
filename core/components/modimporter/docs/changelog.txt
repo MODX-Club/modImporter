@@ -1,4 +1,10 @@
-modImporter-1.5.0-beta
+modImporter-1.6.0-beta
+==============================
+- Minishop2 support
+- Upgrade bugfix
+
+
+modImporter-1.5.0-alpha
 ==============================
 - Added XLSX export-import
 

@@ -37,18 +37,19 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
     
     protected function PrepareExportData()
     {
-        foreach ($this->modx->getIterator('modResource', array(
-            'template:IN'=>array(
-                $this->getProperty("category_template"),
-                $this->getProperty("product_template"),
-            ),
-            "externalKey"   => "",
-        )) as $r) {
-            # if (!$r->externalKey) {
-                $r->set('externalKey', 'export-'.$r->id);
-                $r->save();
-            # }
-        }
+        $this->modx->updateCollection("modResource", array(
+                "externalKey" => "concat('export-', id)",
+            ), array(
+                'template:IN'=>array(
+                    $this->getProperty("category_template"),
+                    $this->getProperty("product_template"),
+                ),
+                array(
+                    "externalKey"   => "",
+                    "OR:externalKey:="   => null
+                ),
+            )
+        );
     }
     
     protected function StepSaveFile()
@@ -65,9 +66,10 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->addSheet($productsSheet, 1);
         
         $objPHPExcel->getSheet(0)->setCellValue('A1', 'id');
-        $objPHPExcel->getSheet(0)->setCellValue('B1', 'pagetitle');
-        $objPHPExcel->getSheet(0)->setCellValue('C1', 'parent');
-        $objPHPExcel->getSheet(0)->setCellValue('D1', 'externalKey');
+        $objPHPExcel->getSheet(0)->setCellValue('B1', 'externalKey');
+        $objPHPExcel->getSheet(0)->setCellValue('C1', 'pagetitle');
+        $objPHPExcel->getSheet(0)->setCellValue('D1', 'parent');
+        $objPHPExcel->getSheet(0)->setCellValue('E1', 'alias');
 
         $categories = $this->modx->getCollection('modResource', array('template'=> $this->getProperty("category_template")));
         
@@ -75,9 +77,10 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         
         foreach($categories as $cat){
             $objPHPExcel->getSheet(0)->setCellValue('A'.$idx, $cat->id);
-            $objPHPExcel->getSheet(0)->setCellValue('B'.$idx, $cat->pagetitle);
-            $objPHPExcel->getSheet(0)->setCellValue('C'.$idx, $cat->parent);
-            $objPHPExcel->getSheet(0)->setCellValue('D'.$idx, $cat->externalKey);
+            $objPHPExcel->getSheet(0)->setCellValue('B'.$idx, $cat->externalKey);
+            $objPHPExcel->getSheet(0)->setCellValue('C'.$idx, $cat->pagetitle);
+            $objPHPExcel->getSheet(0)->setCellValue('D'.$idx, $cat->parent);
+            $objPHPExcel->getSheet(0)->setCellValue('E'.$idx, $cat->alias);
             $idx++;
         }
         
@@ -90,8 +93,11 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         $objPHPExcel->getSheet(1)->setCellValue('E1', 'description');
         $objPHPExcel->getSheet(1)->setCellValue('F1', 'introtext');
         $objPHPExcel->getSheet(1)->setCellValue('G1', 'content');
-        $objPHPExcel->getSheet(1)->setCellValue('H1', 'price');
+        $objPHPExcel->getSheet(1)->setCellValue('J1', 'alias');
         $objPHPExcel->getSheet(1)->setCellValue('I1', 'article');
+        $objPHPExcel->getSheet(1)->setCellValue('J1', 'price');
+        $objPHPExcel->getSheet(1)->setCellValue('K1', 'old_price');
+        $objPHPExcel->getSheet(1)->setCellValue('L1', 'weight');
         
         // $products = $this->modx->getCollection('modResource', array(
         //     'template'  => 3, 
@@ -101,12 +107,38 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
         
         $idx = 2;
         
-        foreach($this->modx->getIterator('modResource', array(
+        $q = $this->modx->newQuery("modResource", array(
             'template'  => $this->getProperty("product_template"), 
             "deleted"   => 0,
             // "id:in"    => [381, 199, 407,]
-        )) as $product){
+        ));
+        
+        $alias = $q->getAlias();
+        
+        $q->select(array(
+            "{$alias}.*",
+        ));
+        
+        
+        /*
+            Если это минишоп, то берем цены
+        */
+        if($this->getProperty("useMinishop")){
+            $q->leftJoin("msProductData", "Data", "Data.id = {$alias}.id");
+            
+            $q->select(array(
+                "Data.*",
+            ));
+        }
+        
+        
+        
+        foreach($this->modx->getIterator('modResource', $q) as $product){
             // print "\n".$idx;
+            
+            # print_r($product->get("price"));
+            # 
+            # break;
             $objPHPExcel->getSheet(1)->setCellValue('A'.$idx, $product->id);
             $objPHPExcel->getSheet(1)->setCellValue('B'.$idx, $product->pagetitle);
             $objPHPExcel->getSheet(1)->setCellValue('C'.$idx, $product->parent);
@@ -114,8 +146,11 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             $objPHPExcel->getSheet(1)->setCellValue('E'.$idx, $product->description);
             $objPHPExcel->getSheet(1)->setCellValue('F'.$idx, $product->introtext);
             $objPHPExcel->getSheet(1)->setCellValue('G'.$idx, $product->content);
-            $objPHPExcel->getSheet(1)->setCellValue('H'.$idx, $product->price);
-            $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $product->article);
+            $objPHPExcel->getSheet(1)->setCellValue('H'.$idx, $product->alias);
+            $objPHPExcel->getSheet(1)->setCellValue('I'.$idx, $product->get("article"));
+            $objPHPExcel->getSheet(1)->setCellValue('J'.$idx, $product->get("price"));
+            $objPHPExcel->getSheet(1)->setCellValue('K'.$idx, $product->get("old_price"));
+            $objPHPExcel->getSheet(1)->setCellValue('L'.$idx, $product->get("weight"));
             
             // print "\n".$idx;
             
@@ -123,6 +158,10 @@ class modImporterExportPairXlsxConsoleProcessor extends modImporterExportConsole
             
             $idx++;
         }
+        
+        # print "SdfsdfdS";
+        # 
+        # return $this->success("");
         
         return $this->saveFile($filename, $objPHPExcel);
         
