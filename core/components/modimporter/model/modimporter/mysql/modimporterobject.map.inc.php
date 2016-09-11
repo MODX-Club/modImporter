@@ -94,7 +94,7 @@ $xpdo_meta_map['modImporterObject'] = array(
       'null' => false,
     ),
     'tmp_raw_data' => array(
-      'dbtype' => 'text',
+      'dbtype' => 'mediumtext',
       'phptype' => 'array',
       'null' => false,
     ),

@@ -67,6 +67,32 @@ $setting->fromArray(array(
 $settings[] = $setting;
 
 
+$setting_name = PKG_NAME_LOWER.'.new_categories_class_key';
+$setting = $modx->newObject('modSystemSetting');
+$setting->fromArray(array(
+    'key' => $setting_name,
+    'value' => 'modResource',
+    'xtype' => 'modx-combo-class-derivatives',
+    'namespace' => NAMESPACE_NAME,
+    'area' => 'default',
+), '', true, true);
+
+$settings[] = $setting;
+
+
+$setting_name = PKG_NAME_LOWER.'.new_products_class_key';
+$setting = $modx->newObject('modSystemSetting');
+$setting->fromArray(array(
+    'key' => $setting_name,
+    'value' => 'modResource',
+    'xtype' => 'modx-combo-class-derivatives',
+    'namespace' => NAMESPACE_NAME,
+    'area' => 'default',
+), '', true, true);
+
+$settings[] = $setting;
+
+
 unset($setting, $setting_name);
 
 return $settings;

@@ -1,3 +1,18 @@
+modImporter-1.6.2-beta
+==============================
+- Added system settings:
+    - modimporter.new_categories_class_key
+    - modimporter.new_products_class_key
+    - new_categories_publish_default (default system publish_default)
+    - new_products_publish_default (default system publish_default)
+- Minor bugfix
+
+
+modImporter-1.6.1-beta
+==============================
+- Minor bugfix
+
+
 modImporter-1.6.0-beta
 ==============================
 - Minishop2 support

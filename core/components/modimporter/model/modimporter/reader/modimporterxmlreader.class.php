@@ -246,41 +246,53 @@ class modImporterXmlReader extends modImporterReader
         return $schema;
     }
 
-    public static function toArray($xml)
-    {
-        if (is_string($xml)) {
-            $xml = new SimpleXMLElement($xml);
-        }
+#     public static function toArray($xml)
+#     {
+#         if (is_string($xml)) {
+#             $xml = new SimpleXMLElement($xml);
+#         }
+# 
+#         if (!$xml or !($xml instanceof SimpleXMLElement)) {
+#             return false;
+#         }
+# 
+#         $children = $xml->children();
+#         if (!$children) {
+#             return (string) $xml;
+#         }
+#         $arr = array();
+#         foreach ($children as $key => $node) {
+#             $node = self::toArray($node);
+# 
+#             // support for 'anon' non-associative arrays
+#             if ($key == 'anon') {
+#                 $key = count($arr);
+#             }
+# 
+#             // if the node is already set, put it into an array
+#             if (isset($arr[$key])) {
+#                 if (!is_array($arr[$key]) || $arr[$key][0] == null) {
+#                     $arr[$key] = array($arr[$key]);
+#                 }
+#                 $arr[$key][] = $node;
+#             } else {
+#                 $arr[$key] = $node;
+#             }
+#         }
+# 
+#         return $arr;
+#     }
 
-        if (!$xml or !($xml instanceof SimpleXMLElement)) {
-            return false;
-        }
-
-        $children = $xml->children();
-        if (!$children) {
-            return (string) $xml;
-        }
-        $arr = array();
-        foreach ($children as $key => $node) {
-            $node = self::toArray($node);
-
-            // support for 'anon' non-associative arrays
-            if ($key == 'anon') {
-                $key = count($arr);
+    public static function toArray(& $xml){
+        
+        if(is_object($xml) OR is_array($xml)){
+            $xml = (array)$xml;
+            
+            foreach($xml as $key => $value){
+                $xml[$key] = $this->toArray($xml[$key]);
             }
-
-            // if the node is already set, put it into an array
-            if (isset($arr[$key])) {
-                if (!is_array($arr[$key]) || $arr[$key][0] == null) {
-                    $arr[$key] = array($arr[$key]);
-                }
-                $arr[$key][] = $node;
-            } else {
-                $arr[$key] = $node;
-            }
         }
-
-        return $arr;
+        return $xml;
     }
 
     # protected function getJsonSchema($schema_name){

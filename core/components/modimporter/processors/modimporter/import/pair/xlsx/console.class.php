@@ -12,6 +12,10 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             'filename' => basename($this->getProperty('file')),
             "category_template"     => (int)$this->modx->getOption("modimporter.category_template_id", null, false),
             "product_template"     => (int)$this->modx->getOption("modimporter.product_template_id", null, false),
+            "new_categories_publish_default" => (int)$this->modx->getOption("modimporter.new_categories_publish_default", null, $this->modx->getOption("publish_default", null, 1)),
+            "new_products_publish_default" => (int)$this->modx->getOption("modimporter.new_products_publish_default", null, $this->modx->getOption("publish_default", null, 1)),
+            "new_categories_class_key" => $this->modx->getOption("modimporter.new_categories_class_key", null, 'modResource'),
+            "new_products_class_key" => $this->modx->getOption("modimporter.new_products_class_key", null, 'modResource'),
         ));
         
         if(!$this->getProperty("category_template")){
@@ -88,6 +92,8 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
         
         $q->limit(1);
         
+        $class_key = $this->getProperty("new_categories_class_key", 'modResource');
+        
         while($tmp_object = $this->modx->getObject("modImporterObject", $q)){
             $tmp_object->tmp_processed = 1;
             $tmp_object->save();
@@ -96,7 +102,8 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
                 "pagetitle" => $tmp_object->tmp_title,
                 "parent"    => $tmp_object->tmp_parent,
                 "template"      => $this->getProperty("category_template"),
-                "published"     => 1,
+                "published"     => $this->getProperty("new_categories_publish_default", 1),
+                "class_key"     => $class_key,
                 "isfolder"      => 1,
             );
             
@@ -328,6 +335,8 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             $inserted = 0;
         }
         
+        $class_key = $this->getProperty("new_products_class_key", 'modResource');
+        
         while($tmp_object = $this->modx->getObject("modImporterObject", $q)){
             
             $tmp_object->tmp_processed = 1;
@@ -335,10 +344,11 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             
             $data = array_merge($tmp_object->toArray(), array(
                 // "class_key" => 'ShopmodxResourceProduct',
-                "published" => 1,
+                "published"     => $this->getProperty("new_products_publish_default"),
                 "isfolder"  => 0,
                 "template"  => $this->getProperty("product_template"),
                 "currency"  => 79,
+                "class_key"     => $class_key,
             ));
             
             
@@ -413,7 +423,7 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
 
         $data = array_merge($data, array(
             'id' => $data['product_id'],       // Устанавливаем id документа
-            'published' => 1,
+            # 'published' => 1,
         ));
 
         $data = array_merge($data, $content);
