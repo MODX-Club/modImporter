@@ -289,7 +289,7 @@ class modImporterXmlReader extends modImporterReader
             $xml = (array)$xml;
             
             foreach($xml as $key => $value){
-                $xml[$key] = $this->toArray($xml[$key]);
+                $xml[$key] = self::toArray($xml[$key]);
             }
         }
         return $xml;
