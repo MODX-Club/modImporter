@@ -65,9 +65,9 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             $categoryData = array();
             $categoryData = array_combine($columnMap, $colData);
             // return print_r($categoryData);
-            $id = $categoryData['externalKey'];
+            $id = !empty($categoryData['externalKey']) ? $categoryData['externalKey'] : null;
             $data = array(
-                'tmp_import_id' => 1,
+                # 'tmp_import_id' => 1,
                 'tmp_parent' => $categoryData['parent'],
                 'tmp_title' => $categoryData['pagetitle'],
                 'tmp_raw_data' => $categoryData
@@ -165,9 +165,6 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
 
         $rowNum = 2;        
         
-        // print $highestRow;
-        // exit;
-        
         for ($row = $rowNum; $row <= $highestRow; ++$row) {
             $colData = array();
             for ($col = 'A'; $col != $highestColumn; ++$col) {
@@ -176,67 +173,18 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
             $productData = array();
             $productData = array_combine($columnMap, $colData);
             
+            $id = !empty($productData['externalKey']) ? $productData['externalKey'] : null;
             
-            // print_r($colData);
-            // print_r($productData);
-            
-            // break;
-            
-            // continue;
-            
-            $sizes = array();
-            
-            $sizes[$productData['color']] = $productData['sizes'];
-            if($row != $highestRow){
-                
-                // print $objWorksheet->getCell("A" . (1+$row))->getValue();
-                // exit;
-                while($objWorksheet->getCell("B" . (1+$row))->getValue() == '' && $row < $highestRow){
-                    $row++;
-                    
-                    if($color = $objWorksheet->getCell("I" . $row)->getValue()){
-                        
-                        $sizes[$color] = $objWorksheet->getCell("J" . $row)->getValue();
-                    }
-                    
-                    
-                    // print "\n$row";
-                    
-                }
-            }
-     
-            // return print_r($productData);
-            $id = $productData['externalKey'];
-            $productData['sizes'] = $sizes;
             $data = array(
-                'tmp_import_id' => 1,
+                # 'tmp_import_id' => 1,
                 'tmp_parent' => $productData['parent'],
                 'tmp_title' => $productData['pagetitle'],
                 'tmp_raw_data' => $productData
             );
+            
             $object = $this->createImportObject($id, $data, 'product');
             $object->save(); 
-            // Если счетчик достиг лимита, обрываем выполнение.
-            // $inserted++;
-            // if ($inserted % $limit === 0) {
-            //     $this->setSessionValue('inserted', $inserted);
-            //     $this->setSessionValue('rowNum', $row);
-            //     $next_step = true;
-    
-            //     return false;
-            // }
-            
-            // die("sdfsdf");
         }
-        
-        // $objects = array();
-
-        
-
-
-        // if ($next_step) {
-        //     return $this->progress("Прочитано {$inserted} товаров.", null, xPDO::LOG_LEVEL_DEBUG);
-        // }
 
         return parent::StepWriteTmpGoods();
     }
@@ -268,10 +216,6 @@ class modModimporterImportPairXlsxConsoleProcessor extends modModimporterImportC
                 foreach($data as $key => $val){
                     if(preg_match('/^tv([0-9]+)$/', $key, $match)){
                         if($tv_id = (int)$match[1]){
-                            
-                            # print_r($doc->id);
-                            # print_r($val);
-                            # print_r($tv_id);
                             $resource->setTVValue($tv_id, $val);
                         }
                     }
