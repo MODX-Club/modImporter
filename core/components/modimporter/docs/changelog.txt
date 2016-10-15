@@ -1,3 +1,8 @@
+modImporter-1.6.3-beta
+==============================
+- Set Ajax timelimit = 0
+- modImporterXmlReader::toArray() fix
+
 modImporter-1.6.2-beta
 ==============================
 - Added system settings:

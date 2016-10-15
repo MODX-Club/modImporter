@@ -85,6 +85,7 @@ Ext.extend(modImporter.window.Console, MODx.Window, {
     close = close === false ? false : true;
     var f = this.fp.getForm();
 
+    f.timeout = 0;
 
     if (f.isValid() && this.fireEvent('beforeSubmit', f.getValues())) {
       f.submit({
